@@ -1,12 +1,17 @@
 package com.example.a91;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,6 +19,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.google.android.material.navigation.NavigationView;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -46,6 +53,10 @@ public class MainActivity extends AppCompatActivity {
     EditText textViewDate;
     EditText textViewAfter;
     EditText textViewBefore;
+
+    //variables for sidemenu
+    private androidx.drawerlayout.widget.DrawerLayout DrawerLayout;
+    private ActionBarDrawerToggle toggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,11 +124,59 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //this part is for the navigation menu
         ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, stringTeatterit);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(aa);
 
+        findViewById(R.id.nav_settings);
 
+        NavigationView navigationView = findViewById(R.id.navigationView);
+        DrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        toggle = new ActionBarDrawerToggle(this, DrawerLayout, R.string.open, R.string.close);
+
+        DrawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        //this makes the menu items start activities when clicked
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                //get item id for comparing with menu item ids
+                int id = item.getItemId();
+
+                //takes to SettingsActivity when Settings is pressed
+                if(id == R.id.nav_settings){
+                    Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                    startActivity(intent);
+                }
+                //takes to AccountActivity when My Account is pressed
+                else if(id == R.id.nav_account){
+                    Intent intent = new Intent(MainActivity.this, AccountActivity.class);
+                    startActivity(intent);
+                }
+                //logs out and takes to log in activity when Log Out is pressed
+                else if(id == R.id.nav_log){
+                    //here something to log out and start the login activity
+                }
+                return true;
+            }
+        });
+    }
+
+    //this allows the hamburger menu to open
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+
+        if(toggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 
