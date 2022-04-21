@@ -1,7 +1,5 @@
 package com.example.a91;
 
-import android.os.StrictMode;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -14,62 +12,44 @@ import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
-import android.os.Bundle;
-import android.os.StrictMode;
-import android.view.View;
+public class TheaterRepo {
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-
-import java.io.IOException;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-public class TeatteriHakemisto {
-
-    private ArrayList<Teatteri> teatterit;
-    private ArrayList<String> stringTeatterit;
+    private ArrayList<Theater> theaters;
+    private ArrayList<String> stringTheaters;
 
 
-    private static TeatteriHakemisto hakemisto = new TeatteriHakemisto();
+    private static TheaterRepo repo = new TheaterRepo();
 
-    private TeatteriHakemisto(){
-        teatterit = new ArrayList<Teatteri>();
+    private TheaterRepo(){
+        theaters = new ArrayList<Theater>();
     }
 
-    public static TeatteriHakemisto getInstance(){
-        return hakemisto;
+    public static TheaterRepo getInstance(){
+        return repo;
     }
 
-    public ArrayList<Teatteri> getTeatterit() {
-        return teatterit;
+    public ArrayList<Theater> getTheaters() {
+        return theaters;
     }
 
-    public void setTeatterit(ArrayList<Teatteri> teatterit) {
-        this.teatterit = teatterit;
+    public void setTheaters(ArrayList<Theater> theaters) {
+        this.theaters = theaters;
     }
 
     public void teatteritToString(){
-        stringTeatterit = new ArrayList<>();
-        for (Teatteri t :teatterit){
-            stringTeatterit.add(t.getPaikka());
+        stringTheaters = new ArrayList<>();
+        for (Theater t : theaters){
+            stringTheaters.add(t.getLocation());
         }
     }
 
-    public ArrayList<String> getStringTeatterit() {
-        hakemisto.teatteritToString();
-        return stringTeatterit;
+    public ArrayList<String> getStringTheaters() {
+        repo.teatteritToString();
+        return stringTheaters;
     }
 
-    public void lueTeatterit() {
+    public void readTheaters() {
         try {
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             String urlString = "https://www.finnkino.fi/xml/TheatreAreas/";
@@ -85,7 +65,7 @@ public class TeatteriHakemisto {
 
                 if(node.getNodeType() == Node.ELEMENT_NODE){
                     Element element = (Element) node;
-                    teatterit.add(new Teatteri(element.getElementsByTagName("ID").item(0).getTextContent(),element.getElementsByTagName("Name").item(0).getTextContent()));
+                    theaters.add(new Theater(element.getElementsByTagName("ID").item(0).getTextContent(),element.getElementsByTagName("Name").item(0).getTextContent()));
                 }
 
             }
@@ -97,21 +77,21 @@ public class TeatteriHakemisto {
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         } finally {
-            System.out.println("###########TEATTERIT DONE###########");
+            System.out.println("###########THEATERS DONE###########");
         }
     }
 
-    public void lueElokuvat(String date, int valinta) {
+    public void readMovies(String date, int choice) {
         try {
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            String id = teatterit.get(valinta).getId();
+            String id = theaters.get(choice).getId();
             String urlString = "https://www.finnkino.fi/xml/Schedule/?area="+id+"&dt="+date;
             Document doc = builder.parse(urlString);
             doc.getDocumentElement().normalize();
             //System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
 
             NodeList nList = doc.getDocumentElement().getElementsByTagName("Show");
-            ArrayList<String> elokuvat = new ArrayList<>();
+            ArrayList<String> movies = new ArrayList<>();
 
 
             for (int i = 0; i< nList.getLength(); i++){
@@ -123,12 +103,12 @@ public class TeatteriHakemisto {
 
                     String aika = element.getElementsByTagName("dttmShowStart").item(0).getTextContent();
                     String saika = aika.substring(11,16);
-                    elokuvat.add(element.getElementsByTagName("Title").item(0).getTextContent()+" "+saika);
+                    movies.add(element.getElementsByTagName("Title").item(0).getTextContent()+" "+saika);
 
                 }
             }
 
-            teatterit.get(valinta).setElokuvat(elokuvat);
+            theaters.get(choice).setMovies(movies);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -137,7 +117,7 @@ public class TeatteriHakemisto {
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         } finally {
-            System.out.println("###########ELOKUVAT DONE###########");
+            System.out.println("###########MOVIES DONE###########");
         }
     }
 
