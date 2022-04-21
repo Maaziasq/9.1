@@ -18,7 +18,7 @@ public class Register_Fragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.login_fragment, container, false);
+        View view = inflater.inflate(R.layout.register_fragment, container, false);
         registerName = view.findViewById(R.id.rName);
         registerEmail = view.findViewById(R.id.rEmail);
         registerPassword = view.findViewById(R.id.rPassword);
