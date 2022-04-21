@@ -287,7 +287,7 @@ public class MainActivity extends AppCompatActivity {
             listView.setAdapter(aa3);
         }
         //this part is for the navigation menu
-        ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, stringTeatterit);
+        ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, stringTheaters);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(aa);
 
