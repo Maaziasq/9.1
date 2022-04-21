@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -46,7 +47,8 @@ public class MainActivity extends AppCompatActivity {
     EditText textViewAfter;
     EditText textViewBefore;
     public static final String TAG = "YOUR-TAG-NAME";
-
+    EditText textVewNimi;
+    Button nappi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,10 @@ public class MainActivity extends AppCompatActivity {
         textViewAfter = findViewById(R.id.editTextAfter);
         textViewBefore = findViewById(R.id.editTextBefore);
         textViewDate = findViewById(R.id.editTextDate);
+        textVewNimi = findViewById(R.id.editTextNimi);
+        nappi = findViewById(R.id.button);
+        theaterRepo.readTheaters();
+        stringTheaters = theaterRepo.getStringTheaters();
 
         // Access a Cloud Firestore instance from your Activity
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -72,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         user.put("born", 1815);
 
         // Add a new document with a generated ID
-        db.collection("users")
+        db.collection("users1")
                 .add(user)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
@@ -95,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         user.put("born", 1912);
 
         // Add a new document with a generated ID
-        db.collection("users")
+        db.collection("users2")
                 .add(user)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
@@ -110,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-        db.collection("users")
+        db.collection("users2")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -183,6 +189,81 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+
+    }
+    public void haeKaikki(View v){
+        theaterRepo.readMovies(textViewDate.getText().toString(), choice);
+        SimpleDateFormat formatter3 = new SimpleDateFormat("HH:mm");
+        String nimi = textVewNimi.getText().toString();
+
+
+        if (nimi != "") {
+            ArrayList<String> kaikki = theaterRepo.readAll(nimi);
+
+            if (textViewAfter.getText().toString().equals("") && textViewBefore.getText().toString().equals("")) {
+                ArrayAdapter aa4 = new ArrayAdapter(context, android.R.layout.simple_list_item_1, kaikki);
+                listView.setAdapter(aa4);
+            }else{
+                ArrayList<String> haetut = new ArrayList<>();
+                Date after = null;
+                Date before = null;
+                try {
+                    after = formatter3.parse(textViewAfter.getText().toString());
+                    before = formatter3.parse(textViewBefore.getText().toString());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                for (int i = 0; i < kaikki.size(); i++) {
+                    String elokuva = kaikki.get(i);
+                    String saika = elokuva.substring(elokuva.length() - 5);
+                    System.out.println(saika);
+                    try {
+                        Date aika = formatter3.parse(saika);
+                        if (aika.after(after) && aika.before(before)) {
+                            haetut.add(elokuva);
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+                ArrayAdapter aa3 = new ArrayAdapter(context, android.R.layout.simple_list_item_1, haetut);
+                listView.setAdapter(aa3);
+            }
+        } else if (textViewAfter.getText().toString().equals("") && textViewBefore.getText().toString().equals("")) {
+            movies = theaterRepo.getTheaters().get(choice).getMovies();
+            ArrayAdapter aa2 = new ArrayAdapter(context, android.R.layout.simple_list_item_1, movies);
+            listView.setAdapter(aa2);
+        } else {
+            movies = theaterRepo.getTheaters().get(choice).getMovies();
+            ArrayList<String> searched = new ArrayList<>();
+            Date after = null;
+            Date before = null;
+            try {
+                after = formatter3.parse(textViewAfter.getText().toString());
+                before = formatter3.parse(textViewBefore.getText().toString());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            for (int i = 0; i < movies.size(); i++) {
+                String movie = movies.get(i);
+                String stringTime = movie.substring(movie.length() - 5);
+                System.out.println(stringTime);
+                try {
+                    Date aika = formatter3.parse(stringTime);
+                    if (aika.after(after) && aika.before(before)) {
+                        searched.add(movie);
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+            }
+            ArrayAdapter aa3 = new ArrayAdapter(context, android.R.layout.simple_list_item_1, searched);
+            listView.setAdapter(aa3);
+        }
     }
 
 
