@@ -226,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
                 ArrayAdapter aa4 = new ArrayAdapter(context, android.R.layout.simple_list_item_1, kaikki);
                 listView.setAdapter(aa4);
             }else{
-                ArrayList<String> haetut = new ArrayList<>();
+                ArrayList<String> searched = new ArrayList<>();
                 Date after = null;
                 Date before = null;
                 try {
@@ -237,20 +237,20 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 for (int i = 0; i < kaikki.size(); i++) {
-                    String elokuva = kaikki.get(i);
-                    String saika = elokuva.substring(elokuva.length() - 5);
-                    System.out.println(saika);
+                    String movie = kaikki.get(i);
+                    String stringTime = movie.substring(movie.length() - 5);
+                    System.out.println(stringTime);
                     try {
-                        Date aika = formatter3.parse(saika);
+                        Date aika = formatter3.parse(stringTime);
                         if (aika.after(after) && aika.before(before)) {
-                            haetut.add(elokuva);
+                            searched.add(movie);
                         }
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
 
                 }
-                ArrayAdapter aa3 = new ArrayAdapter(context, android.R.layout.simple_list_item_1, haetut);
+                ArrayAdapter aa3 = new ArrayAdapter(context, android.R.layout.simple_list_item_1, searched);
                 listView.setAdapter(aa3);
             }
         } else if (textViewAfter.getText().toString().equals("") && textViewBefore.getText().toString().equals("")) {
