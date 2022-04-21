@@ -6,10 +6,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CalendarView;
+import android.widget.EditText;
 import android.widget.ImageButton;
 
 public class AccountActivity extends AppCompatActivity {
+
+    EditText setcalendartext;
+    CalendarView calendarView;
+    Button setcalendar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,5 +35,22 @@ public class AccountActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+       /* setcalendar = findViewById(R.id.datebutton);
+        setcalendartext =findViewById(R.id.setdatetext);
+
+        setcalendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(setcalendartext.getText().isEmpty()){        //TÄÄ ON KESKEN NO PANIC
+
+                    Intent intent = new Intent(Intent.ACTION_INSERT);
+                    intent.setData(CalendarContract.CONTENT_URI);
+                    intent.putExtra(CalendarContract.Events.TITLE)
+                }
+
+            }
+        });*/
+
     }
 }
