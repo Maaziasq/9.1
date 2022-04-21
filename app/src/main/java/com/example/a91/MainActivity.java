@@ -214,6 +214,7 @@ public class MainActivity extends AppCompatActivity {
 
         //this part is for the navigation menu
         findViewById(R.id.nav_settings);
+        findViewById(R.id.nav_account);
 
         NavigationView navigationView = findViewById(R.id.navigationView);
         DrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
