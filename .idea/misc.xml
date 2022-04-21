@@ -3,17 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-
-        <entry key="..\:/Users/kevin/Downloads/9.1.kevintesti/app/src/main/res/drawable/roundcorner.xml" value="0.254" />
-        <entry key="..\:/Users/kevin/Downloads/9.1.kevintesti/app/src/main/res/layout/activity_account.xml" value="0.176" />
-        <entry key="..\:/Users/kevin/Downloads/9.1.kevintesti/app/src/main/res/layout/activity_home.xml" value="0.11388888888888889" />
-        <entry key="..\:/Users/kevin/Downloads/9.1.kevintesti/app/src/main/res/layout/activity_main.xml" value="0.1644021739130435" />
-        <entry key="..\:/Users/kevin/Downloads/9.1.kevintesti/app/src/main/res/layout/activity_settings.xml" value="0.20520833333333333" />
-        <entry key="..\:/Users/kevin/Downloads/9.1.kevintesti/app/src/main/res/layout/activity_sidemenu.xml" value="0.20520833333333333" />
-        <entry key="..\:/Users/kevin/Downloads/9.1.kevintesti/app/src/main/res/layout/login_fragment.xml" value="0.20520833333333333" />
-        <entry key="..\:/Users/kevin/Downloads/9.1.kevintesti/app/src/main/res/layout/register_fragment.xml" value="0.20520833333333333" />
-        <entry key="..\:/Users/kevin/Downloads/9.1.kevintesti/app/src/main/res/menu/nav_menu.xml" value="0.20520833333333333" />
-
+        <entry key="..\:/Users/matia/AndroidStudioProjects/91/app/src/main/res/layout/activity_home.xml" value="0.25462962962962965" />
+        <entry key="..\:/Users/matia/AndroidStudioProjects/91/app/src/main/res/layout/activity_main.xml" value="0.33" />
       </map>
     </option>
   </component>
