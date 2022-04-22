@@ -30,6 +30,7 @@ public class HomeActivity extends AppCompatActivity {
                 FragmentManager manager = getSupportFragmentManager();
                 FragmentTransaction transaction = manager.beginTransaction();
                 transaction.replace(R.id.Container, fragment);
+                transaction.addToBackStack(null);
                 transaction.commit();
             }
         };
