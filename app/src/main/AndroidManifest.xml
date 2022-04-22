@@ -12,11 +12,39 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.91"
         android:usesCleartextTraffic="true">
+
         <activity
-            android:name=".MainActivity"
-            android:exported="false" />
+            android:name=".SettingsActivity"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="package.OtherActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".AccountActivity"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="package.OtherActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".HomeActivity"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="package." />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

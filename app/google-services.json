@@ -1,33 +1,43 @@
 {
   "project_info": {
-    "project_number": "771876412402",
-    "project_id": "kinoapp-38e2b",
-    "storage_bucket": "kinoapp-38e2b.appspot.com"
+
+    "project_number": "75850870521",
+    "project_id": "kino-4a727",
+    "storage_bucket": "kino-4a727.appspot.com"
+
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:771876412402:android:a45e2a526df39e30e8e96b",
+
+        "mobilesdk_app_id": "1:75850870521:android:0024cd45796502823f7c28",
+
         "android_client_info": {
           "package_name": "com.example.a91"
         }
       },
       "oauth_client": [
         {
-          "client_id": "771876412402-9jo388i55mglcjpcdo8kikffmnede0ph.apps.googleusercontent.com",
+
+          "client_id": "75850870521-bo0a7m0r5m8h3h1e36dk11smdu81shuq.apps.googleusercontent.com",
+
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBgCRADH5jgzZyup_w4rCzeb0XGkB7Jqhg"
+
+          "current_key": "AIzaSyA7il0Eu26D_NYThf1vAIPZt6vsF_MZIiU"
+
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "771876412402-9jo388i55mglcjpcdo8kikffmnede0ph.apps.googleusercontent.com",
+
+              "client_id": "75850870521-bo0a7m0r5m8h3h1e36dk11smdu81shuq.apps.googleusercontent.com",
+
               "client_type": 3
             }
           ]
