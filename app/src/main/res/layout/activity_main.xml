@@ -51,9 +51,14 @@
 
         <Spinner
             android:id="@+id/spinner"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100dp" />
+            android:backgroundTint="@color/accentpurple"
+            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+            android:theme="@style/SCBSwitch"
+            android:layout_marginTop="120dp"
+
+            />
 
         <ListView
             android:id="@+id/listview"
@@ -61,7 +66,7 @@
             android:layout_height="match_parent"
             android:layout_below="@id/editTextAfter"
             android:layout_centerVertical="true"
-            android:layout_marginTop="35dp" />
+            android:layout_marginTop="70dp" />
 
         <EditText
             android:id="@+id/editTextAfter"
@@ -70,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/spinner"
             android:layout_marginLeft="50dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="30dp"
             android:layout_toRightOf="@id/editTextBefore"
             android:backgroundTint="@color/accentpurple"
             android:ems="10"
@@ -88,7 +93,7 @@
             android:layout_below="@id/spinner"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="38dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="30dp"
             android:layout_toRightOf="@id/editTextDate"
             android:backgroundTint="@color/accentpurple"
             android:ems="10"
@@ -103,7 +108,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/spinner"
             android:layout_alignParentLeft="true"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="30dp"
 
             android:backgroundTint="@color/accentpurple"
             android:ems="10"

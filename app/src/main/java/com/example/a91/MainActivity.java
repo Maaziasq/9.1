@@ -2,6 +2,7 @@ package com.example.a91;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -16,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -159,6 +161,9 @@ public class MainActivity extends AppCompatActivity{
                 choice = position;
                 theaterRepo.readMovies(textViewDate.getText().toString(), choice);
                 SimpleDateFormat formatter3 = new SimpleDateFormat("HH:mm");
+
+                //changes spinner hint color but causes the app to crash on the first try idk why, second run always works
+                ((TextView) parentView.getChildAt(0)).setTextColor((Color.parseColor("#936285")));
 
 
                 if (textViewAfter.getText().toString().equals("") && textViewBefore.getText().toString().equals("")) {
