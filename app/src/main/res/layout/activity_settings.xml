@@ -26,10 +26,24 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="260dp"
-        android:text="here some settings"
+        android:layout_marginTop="116dp"
+        android:text="Settings"
+        android:textColor="@color/black"
+        android:textSize="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/frameLayout1"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:background="@drawable/search_background"
+        android:elevation="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.388" />
