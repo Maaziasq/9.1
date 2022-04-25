@@ -8,5 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="green">#00FF7F</color>
+    <color name="eggshell">#F2F2F2</color>
+    <color name="accentpurple">#936285</color>
+    <color name="accentgrey">#858CA6</color>
     #00FF7F
 </resources>
