@@ -38,7 +38,7 @@
             android:id="@+id/editTextNimi"
             android:layout_width="230dp"
             android:layout_height="wrap_content"
-            android:hint="Movie name"
+            android:hint="@string/search_hint"
             android:elevation="3dp"
             android:inputType="text"
             android:layout_centerHorizontal="true"
@@ -55,7 +55,6 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/accentpurple"
             style="@style/Base.Widget.AppCompat.Spinner.Underlined"
-            android:theme="@style/SCBSwitch"
             android:layout_marginTop="120dp"
 
             />
@@ -79,7 +78,7 @@
             android:layout_toRightOf="@id/editTextBefore"
             android:backgroundTint="@color/accentpurple"
             android:ems="10"
-            android:hint="After"
+            android:hint="@string/after_hint"
             android:inputType="time"
             android:textColor="@color/accentpurple"
             android:textColorHint="@color/accentpurple" />
@@ -97,7 +96,7 @@
             android:layout_toRightOf="@id/editTextDate"
             android:backgroundTint="@color/accentpurple"
             android:ems="10"
-            android:hint="Before"
+            android:hint="@string/before_hint"
             android:inputType="time"
             android:textColor="@color/accentpurple"
             android:textColorHint="@color/accentpurple" />
@@ -112,7 +111,7 @@
 
             android:backgroundTint="@color/accentpurple"
             android:ems="10"
-            android:hint="Date"
+            android:hint="@string/date_hint"
             android:inputType="date"
             android:textColor="@color/accentpurple"
             android:textColorHint="@color/accentpurple"
@@ -128,7 +127,7 @@
             android:src="@drawable/ic_baseline_search_24"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:onClick="haeKaikki"
-            android:text="Hae Elokuvalla" />
+            />
 
 
     </RelativeLayout>

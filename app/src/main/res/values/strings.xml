@@ -1,10 +1,15 @@
 <resources>
-    <string name="app_name"> </string>
+    <string name="app_name">" "</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="prompt_password_again">Repeat password</string>
     <string name="action_sign_in">Sign in or register</string>
+    <string name="action_register">Register</string>
+    <string name="action_log_in_short">Log in</string>
+    <string name="action_log_out_short">Log Out</string>
+    <string name="action_login_short">Login</string>
+    <string name="action_register_short">Movie name</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome">"Welcome !"</string>
     <string name="invalid_username">Not a valid username</string>
@@ -12,4 +17,19 @@
     <string name="login_failed">"Login failed"</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
+    <string name="search_hint">Movie name</string>
+    <string name="after_hint">After</string>
+    <string name="before_hint">Before</string>
+    <string name="date_hint">Date</string>
+    <string name="Kino">Kino</string>
+    <string name="myaccount">My Account</string>
+    <string name="username">Username</string>
+    <string name="age">Age</string>
+    <string name="settings">Settings</string>
+    <string name="showprofile">Show profile picture</string>
+    <string name="showdata">Show user data</string>
+    <string name="showtown">Hometown:</string>
+    <string name="showlocation">Enable location</string>
+    <string name="give_email">Give your email</string>
+    <string name="give_name">Give your name</string>
 </resources>

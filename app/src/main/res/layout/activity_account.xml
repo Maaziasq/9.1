@@ -35,7 +35,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="80dp"
-                            android:text="My Account"
+                            android:text="@string/myaccount"
                             android:textColor="@color/black"
                             android:textSize="30dp" />
 
@@ -65,7 +65,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="start"
                             android:layout_marginStart="100dp"
-                            android:text="Username"
+                            android:text="@string/username"
                             android:textColor="@color/black" />
 
                         <EditText
@@ -84,7 +84,7 @@
                             android:layout_gravity="start"
                             android:layout_marginStart="100dp"
                             android:layout_marginTop="30dp"
-                            android:text="Age"
+                            android:text="@string/age"
                             android:textColor="@color/black" />
 
                         <EditText

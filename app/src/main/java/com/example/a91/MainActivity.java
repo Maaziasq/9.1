@@ -162,9 +162,6 @@ public class MainActivity extends AppCompatActivity{
                 theaterRepo.readMovies(textViewDate.getText().toString(), choice);
                 SimpleDateFormat formatter3 = new SimpleDateFormat("HH:mm");
 
-                //changes spinner hint color but causes the app to crash on the first try idk why, second run always works
-                ((TextView) parentView.getChildAt(0)).setTextColor((Color.parseColor("#936285")));
-
 
                 if (textViewAfter.getText().toString().equals("") && textViewBefore.getText().toString().equals("")) {
                     movies = theaterRepo.getTheaters().get(choice).getMovies();
