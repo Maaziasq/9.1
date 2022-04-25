@@ -24,6 +24,7 @@ import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 
 import com.google.android.material.navigation.NavigationView;
@@ -38,6 +39,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -68,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG = "YOUR-TAG-NAME";
     EditText textVewNimi;
     Button nappi;
+    FirebaseAuth firebaseAuth;
 
     //variables for sidemenu
     private androidx.drawerlayout.widget.DrawerLayout DrawerLayout;
@@ -89,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
         nappi = findViewById(R.id.button);
         theaterRepo.readTheaters();
         stringTheaters = theaterRepo.getStringTheaters();
+        firebaseAuth = FirebaseAuth.getInstance();
 
         // Access a Cloud Firestore instance from your Activity
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -246,7 +250,10 @@ public class MainActivity extends AppCompatActivity {
                 }
                 //logs out and takes to log in activity when Log Out is pressed
                 else if(id == R.id.nav_log){
-                    //here something to log out and start the login activity
+                    Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                    Toast.makeText(MainActivity.this, "Logged out", Toast.LENGTH_LONG).show();
+                    firebaseAuth.signOut();
                 }
                 return true;
             }
