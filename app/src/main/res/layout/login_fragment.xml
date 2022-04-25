@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="250dp"
             android:layout_marginBottom="40dp"
-            android:text="Login"
+            android:text="@string/action_login_short"
             android:textSize="24dp"
             android:textStyle="bold" />
 
@@ -40,7 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Give your email"
+            android:hint="@string/give_email"
             android:inputType="textEmailAddress" />
 
         <EditText
@@ -55,7 +55,7 @@
             android:id="@+id/l_loginBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Login" />
+            android:text="@string/action_log_in_short" />
 
     </LinearLayout>
 
