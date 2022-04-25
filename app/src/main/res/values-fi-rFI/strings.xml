@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name"> </string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Sähköposti</string>
+    <string name="prompt_password">Salasana</string>
+    <string name="prompt_password_again">Toista salasana uudestaan</string>
+    <string name="action_sign_in">Kirjaudu tai rekisteröidy</string>
+    <string name="action_register">Rekisteröidy</string>
+    <string name="action_log_in_short">Kirjaudu sisään</string>
+    <string name="action_log_out_short">Kirjaudu ulos</string>
+    <string name="action_login_short">Kirjautuminen</string>
+    <string name="action_register_short">Elokuvan nimi</string>
+    <string name="action_sign_in_short">Tee käyttäjä</string>
+    <string name="welcome">"Tervetuloa !"</string>
+    <string name="invalid_username">Käyttäjänimi ei kelpaa</string>
+    <string name="invalid_password">Salasanan tulee olla >5 merkkiä</string>
+    <string name="login_failed">"Kirjautuminen epäonnistui"</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="search_hint">Elokuvan nimi</string>
+    <string name="after_hint">Jälkeen</string>
+    <string name="before_hint">Ennen</string>
+    <string name="date_hint">Pvm</string>
+    <string name="Kino">Kino</string>
+    <string name="myaccount">Minun käyttäjä</string>
+    <string name="username">Käyttäjänimi</string>
+    <string name="age">Ikä</string>
+    <string name="settings">Asetukset</string>
+    <string name="showprofile">Näytä profiilikuva</string>
+    <string name="showdata">Näytä käyttäjädata</string>
+    <string name="showtown">Kotikaupunki:</string>
+    <string name="showlocation">Salli sijainti</string>
+    <string name="give_email">Anna sähköpostisi</string>
+    <string name="give_name">Anna nimesi</string>
+</resources>
