@@ -23,7 +23,7 @@ public class Register_Fragment extends Fragment {
     Button registerRegister;
     ImageButton backButton;
     EditText registerEmail, registerPassword, registerPassword2, registerName;
-    FirebaseAuth rAuth;
+    private FirebaseAuth rAuth;
 
     @Nullable
     @Override
@@ -68,23 +68,17 @@ public class Register_Fragment extends Fragment {
                     }
                 }
                 if (!(eMail.isEmpty() && pWd.isEmpty() && pWd.equals(pWd2) && passwordCheck(pWd))){
-                    try {
-                        String salt = Hash.getSalt();
-                        String scPwd = Hash.securePassword(String.valueOf(registerPassword));
-
-                        rAuth.createUserWithEmailAndPassword(eMail,scPwd).addOnCompleteListener(getActivity(), task -> {
-                            if (!task.isSuccessful()){
-                                Toast.makeText(getActivity(),"Register failed", Toast.LENGTH_SHORT).show();
-                            }
-                            else {
-                                Toast.makeText(getActivity(),"Registration was successful",Toast.LENGTH_SHORT).show();
-                                System.out.println(scPwd);
-                                System.out.println("Onnistui!!");
-                            }
-                        });
-                    } catch (NoSuchAlgorithmException e) {
-                        e.printStackTrace();
-                    }
+                    rAuth.createUserWithEmailAndPassword(eMail,pWd).addOnCompleteListener(getActivity(), task -> {
+                        if (!task.isSuccessful()){
+                            Toast.makeText(getActivity(),"Register failed", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            Toast.makeText(getActivity(),"Registration was successful",Toast.LENGTH_SHORT).show();
+                            System.out.println(pWd);
+                            System.out.println("Onnistui!!");
+                            getFragmentManager().popBackStack();
+                        }
+                    });
                 }
             }});
         return view;

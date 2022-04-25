@@ -39,7 +39,6 @@ public class Login_Fragment extends Fragment {
         loginPassword = view.findViewById(R.id.lPassword);
         loginSignin = view.findViewById(R.id.l_loginBtn);
         backButton = view.findViewById(R.id.bButton2);
-        Hash hash = new Hash();
         firebaseAuth = FirebaseAuth.getInstance();
 
         //Back button
@@ -50,7 +49,7 @@ public class Login_Fragment extends Fragment {
             }
         });
 
-        //Authentication when presed
+        //Authentication when pressed
         loginSignin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,30 +65,25 @@ public class Login_Fragment extends Fragment {
                     loginPassword.requestFocus();
                 }
                 else if (!password.isEmpty() && !email.isEmpty()) {
-
-                    try {
-                        String salt = Hash.getSalt();
-                        String securepasswrd = Hash.securePassword(password);
-
-                        firebaseAuth.signInWithEmailAndPassword(email, securepasswrd).addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
-                            @RequiresApi(api = Build.VERSION_CODES.O)
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                System.out.println(securepasswrd);
-                                if(!task.isSuccessful()){
-                                    Toast.makeText(getActivity(), "Wrong password or e-mail!", Toast.LENGTH_LONG).show();
-                                }
-                                else {
-                                    Intent goHome = new Intent(getActivity(), MainActivity.class);
-                                    startActivity(goHome);
-                                }
+                    //signin
+                    firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                        @RequiresApi(api = Build.VERSION_CODES.O)
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            //email or password doesn't match to firebase
+                            if(!task.isSuccessful()){
+                                Toast.makeText(getActivity(), "Wrong password or e-mail!", Toast.LENGTH_LONG).show();
                             }
-                        });
-                    } catch (NoSuchAlgorithmException e) {
-                        e.printStackTrace();
-                    }
+                            //email and password match
+                            else {
+                                Toast.makeText(getActivity(), "Logged in!", Toast.LENGTH_LONG).show();
+                                Intent goHome = new Intent(getActivity(), MainActivity.class);
+                                startActivity(goHome);
+                            }
+                        }
+                    });
 
-                    };
+                };
             }
         });
 
