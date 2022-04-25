@@ -6,78 +6,129 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:fitsSystemWindows="true"
+    >
+
 
 
 
     <RelativeLayout
         android:id="@+id/framerLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+        android:layout_height="wrap_content"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp"
+        android:background="@color/eggshell"
+        >
+
+
+        <ImageButton
+            android:id="@+id/menubutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="35dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:onClick="onClick"
+            android:src="@drawable/ic_baseline_menu_24" />
 
         <EditText
             android:id="@+id/editTextNimi"
-            android:layout_width="wrap_content"
+            android:layout_width="230dp"
             android:layout_height="wrap_content"
-            android:ems="10"
             android:hint="Movie name"
+            android:elevation="3dp"
             android:inputType="text"
-            android:layout_below="@id/spinner"/>
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:background="@drawable/search_background"
+            />
+
 
         <Spinner
             android:id="@+id/spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/accentpurple"
+            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+            android:theme="@style/SCBSwitch"
+            android:layout_marginTop="120dp"
 
+            />
 
         <ListView
             android:id="@+id/listview"
             android:layout_width="wrap_content"
-            android:layout_height="500dp"
-            android:layout_below="@id/editTextAfter"/>
+            android:layout_height="match_parent"
+            android:layout_below="@id/editTextAfter"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="70dp" />
 
         <EditText
             android:id="@+id/editTextAfter"
+            android:textSize="16dp"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/editTextNimi"
+            android:layout_below="@id/spinner"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="30dp"
+            android:layout_toRightOf="@id/editTextBefore"
+            android:backgroundTint="@color/accentpurple"
             android:ems="10"
             android:hint="After"
             android:inputType="time"
-            android:textColor="@color/black"
-            android:layout_toRightOf="@id/editTextBefore"/>
+            android:textColor="@color/accentpurple"
+            android:textColorHint="@color/accentpurple" />
 
         <EditText
             android:id="@+id/editTextBefore"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/editTextNimi"
+            android:textSize="16dp"
+
+            android:layout_below="@id/spinner"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="38dp"
+            android:layout_marginTop="30dp"
+            android:layout_toRightOf="@id/editTextDate"
+            android:backgroundTint="@color/accentpurple"
             android:ems="10"
             android:hint="Before"
             android:inputType="time"
-            android:textColor="@color/black"
-            android:layout_toRightOf="@id/editTextDate"/>
+            android:textColor="@color/accentpurple"
+            android:textColorHint="@color/accentpurple" />
 
         <EditText
             android:id="@+id/editTextDate"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/editTextNimi"
+            android:layout_below="@id/spinner"
             android:layout_alignParentLeft="true"
+            android:layout_marginTop="30dp"
+
+            android:backgroundTint="@color/accentpurple"
             android:ems="10"
             android:hint="Date"
             android:inputType="date"
-            android:textColor="@color/black" />
-        <Button
+            android:textColor="@color/accentpurple"
+            android:textColorHint="@color/accentpurple"
+            android:textSize="16dp" />
+
+        <ImageButton
             android:id="@+id/button"
+            android:layout_marginTop="35dp"
             android:layout_width="wrap_content"
+            android:layout_toEndOf="@+id/editTextNimi"
+            android:layout_marginStart="14dp"
             android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_search_24"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:onClick="haeKaikki"
-            android:text="Hae Elokuvalla"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/listview"/>
+            android:text="Hae Elokuvalla" />
 
 
     </RelativeLayout>
@@ -89,6 +140,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
+        app:headerLayout="@layout/nav_header"
         app:menu="@menu/nav_menu" />
 
 

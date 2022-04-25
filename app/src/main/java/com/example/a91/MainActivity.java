@@ -1,48 +1,40 @@
 package com.example.a91;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.drawerlayout.widget.DrawerLayout;
-
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
-
-import android.view.MenuItem;
-
 import android.util.Log;
-
+import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
-
-import com.google.android.material.navigation.NavigationView;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -50,10 +42,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     Context context = null;
     TheaterRepo theaterRepo = TheaterRepo.getInstance();
@@ -67,11 +58,12 @@ public class MainActivity extends AppCompatActivity {
     EditText textViewBefore;
     public static final String TAG = "YOUR-TAG-NAME";
     EditText textVewNimi;
-    Button nappi;
+    ImageButton searchbutton;
+    ImageButton menubutton;
 
     //variables for sidemenu
-    private androidx.drawerlayout.widget.DrawerLayout DrawerLayout;
-    private ActionBarDrawerToggle toggle;
+    private androidx.drawerlayout.widget.DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle drawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,13 +72,14 @@ public class MainActivity extends AppCompatActivity {
         context = MainActivity.this;
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
+        menubutton = findViewById(R.id.menubutton);
         spinner = findViewById(R.id.spinner);
         listView = findViewById(R.id.listview);
         textViewAfter = findViewById(R.id.editTextAfter);
         textViewBefore = findViewById(R.id.editTextBefore);
         textViewDate = findViewById(R.id.editTextDate);
         textVewNimi = findViewById(R.id.editTextNimi);
-        nappi = findViewById(R.id.button);
+        searchbutton = findViewById(R.id.button);
         theaterRepo.readTheaters();
         stringTheaters = theaterRepo.getStringTheaters();
 
@@ -169,6 +162,9 @@ public class MainActivity extends AppCompatActivity {
                 theaterRepo.readMovies(textViewDate.getText().toString(), choice);
                 SimpleDateFormat formatter3 = new SimpleDateFormat("HH:mm");
 
+                //changes spinner hint color but causes the app to crash on the first try idk why, second run always works
+                ((TextView) parentView.getChildAt(0)).setTextColor((Color.parseColor("#936285")));
+
 
                 if (textViewAfter.getText().toString().equals("") && textViewBefore.getText().toString().equals("")) {
                     movies = theaterRepo.getTheaters().get(choice).getMovies();
@@ -216,15 +212,20 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.nav_settings);
         findViewById(R.id.nav_account);
 
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
+        toggle.setDrawerIndicatorEnabled(true);
+
+
         NavigationView navigationView = findViewById(R.id.navigationView);
-        DrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-        toggle = new ActionBarDrawerToggle(this, DrawerLayout, R.string.open, R.string.close);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
 
-        DrawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        navigationView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawerLayout.openDrawer(Gravity.LEFT);
+            }
+        });
 
         //this makes the menu items start activities when clicked
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -257,17 +258,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    //this allows the hamburger menu to open
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-
-        if(toggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-
-
-        return super.onOptionsItemSelected(item);
+    public void onClick(View v){
+        drawerLayout.openDrawer(Gravity.LEFT);
     }
+
+
+
 
     public void haeKaikki(View v){
         theaterRepo.readMovies(textViewDate.getText().toString(), choice);
