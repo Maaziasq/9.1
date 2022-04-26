@@ -9,7 +9,7 @@
     <string name="action_log_in_short">Log in</string>
     <string name="action_log_out_short">Log Out</string>
     <string name="action_login_short">Login</string>
-    <string name="action_register_short">Movie name</string>
+    <string name="action_register_short">Register</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome">"Welcome !"</string>
     <string name="invalid_username">Not a valid username</string>
@@ -17,6 +17,7 @@
     <string name="login_failed">"Login failed"</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
+    <string name="history">History</string>
     <string name="search_hint">Movie name</string>
     <string name="after_hint">After</string>
     <string name="before_hint">Before</string>

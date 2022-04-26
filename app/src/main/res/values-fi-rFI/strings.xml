@@ -18,6 +18,7 @@
     <string name="login_failed">"Kirjautuminen epäonnistui"</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
+    <string name="history">Historia</string>
     <string name="search_hint">Elokuvan nimi</string>
     <string name="after_hint">Jälkeen</string>
     <string name="before_hint">Ennen</string>

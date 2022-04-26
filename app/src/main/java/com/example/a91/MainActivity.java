@@ -182,6 +182,7 @@ public class MainActivity extends AppCompatActivity{
         //this part is for the navigation menu
         findViewById(R.id.nav_settings);
         findViewById(R.id.nav_account);
+        findViewById(R.id.nav_history);
 
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
@@ -222,6 +223,10 @@ public class MainActivity extends AppCompatActivity{
                     startActivity(intent);
                     Toast.makeText(MainActivity.this, "Logged out", Toast.LENGTH_LONG).show();
                     firebaseAuth.signOut();
+                //takes to HistoryActivity when History is pressed
+                }else if(id == R.id.nav_history){
+                    Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
+                    startActivity(intent);
                 }
                 return true;
             }
