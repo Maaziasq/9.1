@@ -31,7 +31,7 @@ public class AccountActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AccountActivity.this, MainActivity.class);
+                Intent intent = new Intent(AccountActivity.this, MovieSearch.class);
                 startActivity(intent);
             }
         });

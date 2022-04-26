@@ -22,7 +22,7 @@ public class SettingsActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
+                Intent intent = new Intent(SettingsActivity.this, MovieSearch.class);
                 startActivity(intent);
             }
         });

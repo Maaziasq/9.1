@@ -77,7 +77,7 @@ public class Login_Fragment extends Fragment {
                             //email and password match
                             else {
                                 Toast.makeText(getActivity(), "Logged in!", Toast.LENGTH_LONG).show();
-                                Intent goHome = new Intent(getActivity(), MainActivity.class);
+                                Intent goHome = new Intent(getActivity(), MovieSearch.class);
                                 startActivity(goHome);
                             }
                         }

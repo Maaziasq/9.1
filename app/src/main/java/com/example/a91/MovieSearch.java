@@ -222,6 +222,10 @@ public class MovieSearch extends AppCompatActivity{
                     Toast.makeText(MovieSearch.this, "Logged out", Toast.LENGTH_LONG).show();
                     firebaseAuth.signOut();
                 }
+                else if(id == R.id.nav_history){
+                    Intent intent = new Intent(MovieSearch.this, HistoryActivity.class);
+                    startActivity(intent);
+                }
                 return true;
             }
         });
