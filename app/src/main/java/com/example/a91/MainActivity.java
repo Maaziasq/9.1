@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -64,12 +65,11 @@ public class MainActivity extends AppCompatActivity{
     EditText textViewDate;
     EditText textViewAfter;
     EditText textViewBefore;
-    public static final String TAG = "YOUR-TAG-NAME";
     EditText textVewNimi;
-
+    long mLastClickTime = 0;
     Button nappi;
     FirebaseAuth firebaseAuth;
-
+    FileWriter fileWriter = FileWriter.getInstance();
     ImageButton searchbutton;
     ImageButton menubutton;
 
@@ -96,74 +96,13 @@ public class MainActivity extends AppCompatActivity{
         stringTheaters = theaterRepo.getStringTheaters();
         firebaseAuth = FirebaseAuth.getInstance();
 
-        // Access a Cloud Firestore instance from your Activity
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-
-        // Create a new user with a first and last name
-        Map<String, Object> user = new HashMap<>();
-        user.put("first", "Ada");
-        user.put("last", "Lovelace");
-        user.put("born", 1815);
-
-        // Add a new document with a generated ID
-        db.collection("users1")
-                .add(user)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding document", e);
-                    }
-                });
-
-        // Create a new user with a first, middle, and last name
-        Map<String, Object> user2 = new HashMap<>();
-        user.put("first", "Alan");
-        user.put("middle", "Mathison");
-        user.put("last", "Turing");
-        user.put("born", 1912);
-
-        // Add a new document with a generated ID
-        db.collection("users2")
-                .add(user)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding document", e);
-                    }
-                });
-
-        db.collection("users2")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                            }
-                        } else {
-                            Log.w(TAG, "Error getting documents.", task.getException());
-                        }
-                    }
-                });
-
-
+        //Reading all theaters from the Finnkino XML
         theaterRepo.readTheaters();
+
+        //Converting all theaters all Theaters to string
         stringTheaters = theaterRepo.getStringTheaters();
 
+        //Setting the theaters to theater selection spinner
         ArrayAdapter aa2 = new ArrayAdapter(this, android.R.layout.simple_spinner_item, stringTheaters);
         aa2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(aa2);
@@ -218,6 +157,28 @@ public class MainActivity extends AppCompatActivity{
         });
 
 
+        //Help for double click handling from https://stackoverflow.com/questions/5608720/android-preventing-double-click-on-a-button
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+
+                long currTime = System.currentTimeMillis();
+                if (currTime - mLastClickTime < ViewConfiguration.getDoubleTapTimeout()) {
+                    onItemDoubleClick(adapterView, view, position, l);
+                }
+                mLastClickTime = currTime;
+            }
+
+            public void onItemDoubleClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Toast.makeText(context, "Movie added as watched!",Toast.LENGTH_LONG).show();
+                fileWriter.applyContext(context);
+                fileWriter.addMovie(movies.get(position));
+            }
+        });
+
+
+
+
         //this part is for the navigation menu
         findViewById(R.id.nav_settings);
         findViewById(R.id.nav_account);
@@ -265,10 +226,7 @@ public class MainActivity extends AppCompatActivity{
                 return true;
             }
         });
-
-
-
-
+        
     }
 
     public void onClick(View v){
@@ -352,9 +310,7 @@ public class MainActivity extends AppCompatActivity{
             listView.setAdapter(aa3);
         }
 
-        ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, stringTheaters);
-        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(aa);
+
 
 
     }

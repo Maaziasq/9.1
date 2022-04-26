@@ -51,11 +51,11 @@
 
         <Spinner
             android:id="@+id/spinner"
+            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/accentpurple"
-            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
             android:layout_marginTop="120dp"
+            android:backgroundTint="@color/accentpurple"
 
             />
 
@@ -119,15 +119,14 @@
 
         <ImageButton
             android:id="@+id/button"
-            android:layout_marginTop="35dp"
             android:layout_width="wrap_content"
-            android:layout_toEndOf="@+id/editTextNimi"
-            android:layout_marginStart="14dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_search_24"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="35dp"
+            android:layout_toEndOf="@+id/editTextNimi"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:onClick="haeKaikki"
-            />
+            android:src="@drawable/ic_baseline_search_24" />
 
 
     </RelativeLayout>
