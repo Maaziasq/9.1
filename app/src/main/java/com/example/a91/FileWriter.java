@@ -26,9 +26,9 @@ public class FileWriter {
     private void makeFile(){
         try{
             String fname = "Movie history of "+ FirebaseAuth.getInstance().getCurrentUser().getEmail() + ".csv";
-            OutputStreamWriter ows = new OutputStreamWriter(context.openFileOutput(fname, context.MODE_PRIVATE));
+            OutputStreamWriter ows = new OutputStreamWriter(context.openFileOutput(fname, context.MODE_APPEND));
             String uHeader = "Data of: " + FirebaseAuth.getInstance().getCurrentUser().getEmail() + "\n";
-            String dHeader = "Name";
+            String dHeader = "Name;Time;Rating;\n";
             ows.write(uHeader);
             ows.write(dHeader);
             ows.close();
@@ -45,9 +45,9 @@ public class FileWriter {
     private void writeFile(String name){
         try{
             String fname = "Movie history of "+ FirebaseAuth.getInstance().getCurrentUser().getEmail() + ".csv";
-            OutputStreamWriter ows = new OutputStreamWriter(context.openFileOutput(fname, context.MODE_PRIVATE));
+            OutputStreamWriter ows = new OutputStreamWriter(context.openFileOutput(fname, context.MODE_APPEND));
             String newMovie = name + ";";
-            ows.append(newMovie);
+            ows.append(newMovie+"\n");
             ows.close();
 
         } catch (FileNotFoundException e) {

@@ -43,7 +43,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".MovieSearch"
             android:exported="true">
             <intent-filter>
                 <action android:name="package.OtherActivity" />
