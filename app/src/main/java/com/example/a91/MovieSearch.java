@@ -94,11 +94,21 @@ public class MovieSearch extends AppCompatActivity{
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 choice = position;
+                /*String date = textViewDate.getText().toString();
+                if(date.equals("")){
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+                    date = formatter.format(new Date());
+                }*/
                 theaterRepo.readMovies(textViewDate.getText().toString(), position);
                 SimpleDateFormat formatter3 = new SimpleDateFormat("HH:mm");
 
                 if (textViewAfter.getText().toString().equals("") && textViewBefore.getText().toString().equals("")) {
-                    theaterRepo.getTheaters().get(position).moviesToString();
+                    if(theaterRepo.getTheaters().get(position) != null){
+                        theaterRepo.getTheaters().get(position).moviesToString();
+                    }
+                    else{
+                        System.out.println("Movies list was empty");
+                    }
                     stringMovies = theaterRepo.getTheaters().get(position).getStringMovies();
                     ArrayAdapter aa2 = new ArrayAdapter(context, android.R.layout.simple_list_item_1, stringMovies);
                     listView.setAdapter(aa2);
@@ -120,6 +130,7 @@ public class MovieSearch extends AppCompatActivity{
                         String stringTime = movie.substring(movie.length() - 5);
                         try {
                             Date aika = formatter3.parse(stringTime);
+                            assert aika != null;
                             if (aika.after(after) && aika.before(before)) {
                                 searched.add(movie);
                             }
@@ -175,7 +186,7 @@ public class MovieSearch extends AppCompatActivity{
 
 
         NavigationView navigationView = findViewById(R.id.navigationView);
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        drawerLayout = findViewById(R.id.drawerLayout);
 
         navigationView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -232,7 +243,7 @@ public class MovieSearch extends AppCompatActivity{
         String nimi = textVewNimi.getText().toString();
 
 
-        if (nimi != "") {
+        if (!nimi.equals("")) {
             ArrayList<String> kaikki = theaterRepo.readAll(nimi);
 
             if (textViewAfter.getText().toString().equals("") && textViewBefore.getText().toString().equals("")) {
@@ -290,6 +301,7 @@ public class MovieSearch extends AppCompatActivity{
                 System.out.println(stringTime);
                 try {
                     Date aika = formatter3.parse(stringTime);
+                    assert aika != null;
                     if (aika.after(after) && aika.before(before)) {
                         searched.add(movie);
                     }

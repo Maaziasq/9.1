@@ -2,15 +2,12 @@ package com.example.a91;
 
 
 import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
@@ -19,10 +16,10 @@ import java.net.URLEncoder;
 
 public class OMDBClient {
 
-    public static final String SEARCH_URL = "https://www.omdbapi.com/?s=TITLE&apikey=APIKEY";
+    public static final String SEARCH_URL = "https://www.omdbapi.com/?t=TITLE&apikey=APIKEY";
     public static final String SEARCH_URL_ID = "https://www.omdbapi.com/?i=ID&apikey=APIKEY";
 
-    public static String sendGetRequest(String requestURL) throws JSONException {
+    public static String sendGetRequest(String requestURL) {
         StringBuffer response = new StringBuffer();
 
         try {
@@ -43,8 +40,6 @@ public class OMDBClient {
             buffer.close();
             connection.disconnect();
 
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

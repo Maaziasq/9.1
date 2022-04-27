@@ -126,7 +126,6 @@
             android:layout_toEndOf="@+id/editTextNimi"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:onClick="searchByName"
-
             android:src="@drawable/ic_baseline_search_24" />
 
 

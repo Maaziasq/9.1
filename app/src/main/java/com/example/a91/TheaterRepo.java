@@ -24,12 +24,12 @@ public class TheaterRepo {
     private ArrayList<String> stringTheaters;
 
     //singleton
-    private static TheaterRepo repo = new TheaterRepo();
+    private static final TheaterRepo repo = new TheaterRepo();
 
     int searchCounter = 0;
 
     private TheaterRepo(){
-        theaters = new ArrayList<Theater>();
+        theaters = new ArrayList<>();
     }
 
     public static TheaterRepo getInstance(){
@@ -38,10 +38,6 @@ public class TheaterRepo {
 
     public ArrayList<Theater> getTheaters() {
         return theaters;
-    }
-
-    public void setTheaters(ArrayList<Theater> theaters) {
-        this.theaters = theaters;
     }
 
     public void teatteritToString(){
@@ -78,11 +74,7 @@ public class TheaterRepo {
 
             }
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (ParserConfigurationException e) {
+        } catch (IOException | SAXException | ParserConfigurationException e) {
             e.printStackTrace();
         } finally {
             System.out.println("###########THEATERS DONE###########");
@@ -124,21 +116,18 @@ public class TheaterRepo {
                     String response = omdbSearch.getString("Response");
                     if(response.equals("True")){
 
-                        JSONArray search = omdbSearch.getJSONArray("Search");
-                        //int n = search.length();
-                        //for (int x = 0; i<n ; i++)
-                        {
-                            JSONObject movie = search.getJSONObject(0);
-                            String imdbID = movie.getString("imdbID");
+                        /*//JSONArray search = omdbSearch.getJSONArray("Search");
+                            //JSONObject movie = search.getJSONObject(0);
+                            String imdbID = omdbSearch.getString("imdbID");
 
                             String omdbJsonID = omdb.searchMovieById(imdbID, "d70c841d");
                             JSONObject omdbIdSearch = new JSONObject(omdbJsonID);
-                            searchCounter++;
+                            searchCounter++;*/
 
-                            String rating = omdbIdSearch.getString("imdbRating");
-                            String director = omdbIdSearch.getString("Director");
+                            String rating = omdbSearch.getString("imdbRating");
+                            String director = omdbSearch.getString("Director");
                             movies.add(new Movie(title, saika, rating, director, aika));
-                    }
+
 
                     }else{
                         movies.add(new Movie(title,saika, "N/A","N/A",aika));
@@ -149,13 +138,7 @@ public class TheaterRepo {
 
             theaters.get(choice).setMovies(movies);
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
+        } catch (IOException | SAXException | ParserConfigurationException | JSONException e) {
             e.printStackTrace();
         } finally {
             System.out.println("Searches performed: "+searchCounter);
@@ -169,7 +152,7 @@ public class TheaterRepo {
         all.add(0,nimi);
         try {
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            ArrayList<Integer> areas = new ArrayList<Integer>();
+            ArrayList<Integer> areas = new ArrayList<>();
             Collections.addAll(areas,1014 ,1015 ,1016, 1017, 1041, 1018, 1019, 1021, 1022);
 
             for(int i = 0; i<areas.size();i++){
@@ -205,11 +188,7 @@ public class TheaterRepo {
 
             }
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (ParserConfigurationException e) {
+        } catch (IOException | SAXException | ParserConfigurationException e) {
             e.printStackTrace();
         } finally {
             System.out.println("###########MOVIES DONE###########");
