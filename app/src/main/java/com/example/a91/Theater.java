@@ -12,11 +12,12 @@ public class Theater {
         return movies;
     }
 
-    public void moviesToString(){
+    public ArrayList<String> moviesToString(){
         stringMovies = new ArrayList<>();
         for (Movie m : movies){
             stringMovies.add(m.getName()+"\nStart time: "+m.getTime()+"\nIMDB rating: "+m.getRating());
         }
+        return stringMovies;
     }
 
     public ArrayList<String> getStringMovies() {

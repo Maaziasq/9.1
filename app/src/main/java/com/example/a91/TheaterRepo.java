@@ -22,7 +22,10 @@ public class TheaterRepo {
 
     private ArrayList<Theater> theaters;
     private ArrayList<String> stringTheaters;
+
+    //singleton
     private static TheaterRepo repo = new TheaterRepo();
+
     int searchCounter = 0;
 
     private TheaterRepo(){
@@ -110,28 +113,35 @@ public class TheaterRepo {
                     String aika = element.getElementsByTagName("dttmShowStart").item(0).getTextContent();
                     String saika = aika.substring(11,16);
                     //String pubYear = element.getElementsByTagName("PubDate").item(0).getTextContent().substring(0,4);
-                    //String title = element.getElementsByTagName("Title").item(0).getTextContent();
+                    String title = element.getElementsByTagName("Title").item(0).getTextContent();
                     String originalTitle = element.getElementsByTagName("OriginalTitle").item(0).getTextContent();
+
+
                     String omdbJson = omdb.searchMovieByTitle(originalTitle,"d70c841d");
                     JSONObject omdbSearch = new JSONObject(omdbJson);
+                    System.out.println(omdbSearch);
                     searchCounter++;
                     String response = omdbSearch.getString("Response");
-
                     if(response.equals("True")){
+
                         JSONArray search = omdbSearch.getJSONArray("Search");
                         //int n = search.length();
                         //for (int x = 0; i<n ; i++)
                         {
                             JSONObject movie = search.getJSONObject(0);
                             String imdbID = movie.getString("imdbID");
+
                             String omdbJsonID = omdb.searchMovieById(imdbID, "d70c841d");
                             JSONObject omdbIdSearch = new JSONObject(omdbJsonID);
                             searchCounter++;
+
                             String rating = omdbIdSearch.getString("imdbRating");
-                            String title = omdbIdSearch.getString("Title");
-                            movies.add(new Movie(title, saika, rating));
+                            String director = omdbIdSearch.getString("Director");
+                            movies.add(new Movie(title, saika, rating, director, aika));
                     }
 
+                    }else{
+                        movies.add(new Movie(title,saika, "N/A","N/A",aika));
                     }
 
                 }

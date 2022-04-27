@@ -4,6 +4,8 @@ public class Movie {
     private String name;
     private String time;
     private String rating;
+    private String director;
+    private String dttm;
 
     public String getName() {
         return name;
@@ -29,6 +31,21 @@ public class Movie {
         this.rating = rating;
     }
 
+    public Movie(String name, String time, String rating, String director, String dttm) {
+        this.name = name;
+        this.time = time;
+        this.rating = rating;
+        this.director = director;
+        this.dttm = dttm;
+    }
+
+    public Movie(String name, String time, String rating, String director) {
+        this.name = name;
+        this.time = time;
+        this.rating = rating;
+        this.director = director;
+    }
+
     public Movie(String name, String time, String rating) {
         this.name = name;
         this.time = time;
@@ -38,6 +55,14 @@ public class Movie {
         this.name = name;
         this.time = time;
         this.rating = rating;
+    }
+
+    public String getDirector() {
+        return director;
+    }
+
+    public String getDttm() {
+        return dttm;
     }
 
     public Movie(){
