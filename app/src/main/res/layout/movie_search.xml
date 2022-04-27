@@ -49,12 +49,14 @@
             />
 
 
+
         <com.example.a91.NDSpinner
             android:id="@+id/spinner"
             style="@style/Base.Widget.AppCompat.Spinner.Underlined"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="120dp"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/editTextAfter"
             android:backgroundTint="@color/accentpurple"
 
             />
@@ -69,45 +71,43 @@
 
         <EditText
             android:id="@+id/editTextAfter"
-            android:textSize="16dp"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/spinner"
-            android:layout_marginLeft="50dp"
-            android:layout_marginTop="30dp"
-            android:layout_toRightOf="@id/editTextBefore"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="120dp"
+            android:layout_toRightOf="@+id/editTextDate"
             android:backgroundTint="@color/accentpurple"
             android:ems="10"
             android:hint="@string/after_hint"
             android:inputType="time"
             android:textColor="@color/accentpurple"
-            android:textColorHint="@color/accentpurple" />
+            android:textColorHint="@color/accentpurple"
+            android:textSize="16dp" />
 
         <EditText
             android:id="@+id/editTextBefore"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:textSize="16dp"
-
-            android:layout_below="@id/spinner"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="38dp"
-            android:layout_marginTop="30dp"
-            android:layout_toRightOf="@id/editTextDate"
+            android:layout_marginTop="120dp"
+            android:layout_toRightOf="@+id/editTextAfter"
             android:backgroundTint="@color/accentpurple"
             android:ems="10"
             android:hint="@string/before_hint"
             android:inputType="time"
             android:textColor="@color/accentpurple"
-            android:textColorHint="@color/accentpurple" />
+            android:layout_marginStart="30dp"
+            android:textColorHint="@color/accentpurple"
+            android:textSize="16dp" />
+
 
         <EditText
             android:id="@+id/editTextDate"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/spinner"
+
             android:layout_alignParentLeft="true"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="120dp"
 
             android:backgroundTint="@color/accentpurple"
             android:ems="10"
@@ -126,6 +126,7 @@
             android:layout_toEndOf="@+id/editTextNimi"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:onClick="searchByName"
+
             android:src="@drawable/ic_baseline_search_24" />
 
 
