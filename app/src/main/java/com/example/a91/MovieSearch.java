@@ -86,6 +86,9 @@ public class MovieSearch extends AppCompatActivity{
         aa2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(aa2);
 
+
+        // Fetching the correct movies based on theater choice
+        spinner.setSelection(0,false);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
@@ -93,13 +96,14 @@ public class MovieSearch extends AppCompatActivity{
                 theaterRepo.readMovies(textViewDate.getText().toString(), choice);
                 SimpleDateFormat formatter3 = new SimpleDateFormat("HH:mm");
 
-
                 if (textViewAfter.getText().toString().equals("") && textViewBefore.getText().toString().equals("")) {
-                    movies = theaterRepo.getTheaters().get(choice).getMovies();
+                    theaterRepo.getTheaters().get(choice).moviesToString();
+                    movies = theaterRepo.getTheaters().get(choice).getStringMovies();
                     ArrayAdapter aa2 = new ArrayAdapter(context, android.R.layout.simple_list_item_1, movies);
                     listView.setAdapter(aa2);
                 } else {
-                    movies = theaterRepo.getTheaters().get(choice).getMovies();
+                    theaterRepo.getTheaters().get(choice).moviesToString();
+                    movies = theaterRepo.getTheaters().get(choice).getStringMovies();
                     ArrayList<String> searched = new ArrayList<>();
                     Date after = null;
                     Date before = null;
@@ -113,7 +117,6 @@ public class MovieSearch extends AppCompatActivity{
                     for (int i = 0; i < movies.size(); i++) {
                         String movie = movies.get(i);
                         String stringTime = movie.substring(movie.length() - 5);
-                        System.out.println(stringTime);
                         try {
                             Date aika = formatter3.parse(stringTime);
                             if (aika.after(after) && aika.before(before)) {
@@ -137,6 +140,7 @@ public class MovieSearch extends AppCompatActivity{
 
 
         //Help for double click handling from https://stackoverflow.com/questions/5608720/android-preventing-double-click-on-a-button
+        //Add a movie to a user specific CSV on double click
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -152,6 +156,7 @@ public class MovieSearch extends AppCompatActivity{
                 System.out.println("Double press occurred!");
                 Toast.makeText(context, "Movie added as watched!",Toast.LENGTH_LONG).show();
                 fileWriter.applyContext(context);
+
                 fileWriter.addMovie(movies.get(position));
             }
         });
@@ -219,8 +224,8 @@ public class MovieSearch extends AppCompatActivity{
 
 
 
-
-    public void haeKaikki(View v){
+    //Enables searching from all theaters based on movie name
+    public void searchByName(View v){
         theaterRepo.readMovies(textViewDate.getText().toString(), choice);
         SimpleDateFormat formatter3 = new SimpleDateFormat("HH:mm");
         String nimi = textVewNimi.getText().toString();
@@ -261,11 +266,13 @@ public class MovieSearch extends AppCompatActivity{
                 listView.setAdapter(aa3);
             }
         } else if (textViewAfter.getText().toString().equals("") && textViewBefore.getText().toString().equals("")) {
-            movies = theaterRepo.getTheaters().get(choice).getMovies();
+            theaterRepo.getTheaters().get(choice).moviesToString();
+            movies = theaterRepo.getTheaters().get(choice).getStringMovies();
             ArrayAdapter aa2 = new ArrayAdapter(context, android.R.layout.simple_list_item_1, movies);
             listView.setAdapter(aa2);
         } else {
-            movies = theaterRepo.getTheaters().get(choice).getMovies();
+            theaterRepo.getTheaters().get(choice).moviesToString();
+            movies = theaterRepo.getTheaters().get(choice).getStringMovies();
             ArrayList<String> searched = new ArrayList<>();
             Date after = null;
             Date before = null;
