@@ -5,13 +5,26 @@ import java.util.ArrayList;
 public class Theater {
     private String location;
     private String id;
-    private ArrayList<String> movies = new ArrayList<>();
+    private ArrayList<Movie> movies;
+    private ArrayList<String> stringMovies;
 
-    public ArrayList<String> getMovies() {
+    public ArrayList<Movie> getMovies() {
         return movies;
     }
 
-    public void setMovies(ArrayList<String> movies) {
+    public ArrayList<String> moviesToString(){
+        stringMovies = new ArrayList<>();
+        for (Movie m : movies){
+            stringMovies.add(m.getName()+"\nStart time: "+m.getTime()+"\nIMDB rating: "+m.getRating());
+        }
+        return stringMovies;
+    }
+
+    public ArrayList<String> getStringMovies() {
+        return stringMovies;
+    }
+
+    public void setMovies(ArrayList<Movie> movies) {
         this.movies = movies;
     }
 

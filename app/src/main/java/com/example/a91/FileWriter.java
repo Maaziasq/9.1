@@ -28,7 +28,7 @@ public class FileWriter {
             String fname = "Movie history of "+ FirebaseAuth.getInstance().getCurrentUser().getEmail() + ".csv";
             OutputStreamWriter ows = new OutputStreamWriter(context.openFileOutput(fname, context.MODE_APPEND));
             String uHeader = "Data of: " + FirebaseAuth.getInstance().getCurrentUser().getEmail() + "\n";
-            String dHeader = "Name;Time;Rating;\n";
+            String dHeader = "Name;Rating;Director;Dttm\n";
             ows.write(uHeader);
             ows.write(dHeader);
             ows.close();
@@ -42,11 +42,11 @@ public class FileWriter {
         }
     }
 
-    private void writeFile(String name){
+    private void writeFile(String name,String rating,String director, String dttm){
         try{
             String fname = "Movie history of "+ FirebaseAuth.getInstance().getCurrentUser().getEmail() + ".csv";
             OutputStreamWriter ows = new OutputStreamWriter(context.openFileOutput(fname, context.MODE_APPEND));
-            String newMovie = name + ";";
+            String newMovie = name + ";" + rating+ ";" + director + ";" + dttm + ";";
             ows.append(newMovie+"\n");
             ows.close();
 
@@ -57,7 +57,7 @@ public class FileWriter {
         }
     }
 
-    public void addMovie(String name){
+    public void addMovie(String name,String rating,String director, String dttm){
         String fname = "Movie history of "+ FirebaseAuth.getInstance().getCurrentUser().getEmail() + ".csv";
         String fpath = context.getFilesDir().getAbsolutePath();
         System.out.println(fpath + "/" + fname);
@@ -66,11 +66,11 @@ public class FileWriter {
 
         if(file.length() == 0){
             makeFile();
-            writeFile(name);
+            writeFile(name,rating,director, dttm);
             System.out.println("File created and movie added");
         }
         else {
-            writeFile(name);
+            writeFile(name,rating,director, dttm);
             System.out.println("Movie added to existing file");
         }
     }
