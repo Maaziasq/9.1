@@ -41,9 +41,10 @@ public class MovieSearch extends AppCompatActivity{
     TheaterRepo theaterRepo = TheaterRepo.getInstance();
     Spinner spinner;
     ArrayList<String> stringTheaters;
-    ArrayList<String> movies;
-    int choice;
+    ArrayList<Movie> movies = new ArrayList<>();
+    ArrayList<String> stringMovies = new ArrayList<>();
     ListView listView;
+    int choice;
     EditText textViewDate;
     EditText textViewAfter;
     EditText textViewBefore;
@@ -93,17 +94,17 @@ public class MovieSearch extends AppCompatActivity{
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 choice = position;
-                theaterRepo.readMovies(textViewDate.getText().toString(), choice);
+                theaterRepo.readMovies(textViewDate.getText().toString(), position);
                 SimpleDateFormat formatter3 = new SimpleDateFormat("HH:mm");
 
                 if (textViewAfter.getText().toString().equals("") && textViewBefore.getText().toString().equals("")) {
-                    theaterRepo.getTheaters().get(choice).moviesToString();
-                    movies = theaterRepo.getTheaters().get(choice).getStringMovies();
-                    ArrayAdapter aa2 = new ArrayAdapter(context, android.R.layout.simple_list_item_1, movies);
+                    theaterRepo.getTheaters().get(position).moviesToString();
+                    stringMovies = theaterRepo.getTheaters().get(position).getStringMovies();
+                    ArrayAdapter aa2 = new ArrayAdapter(context, android.R.layout.simple_list_item_1, stringMovies);
                     listView.setAdapter(aa2);
                 } else {
-                    theaterRepo.getTheaters().get(choice).moviesToString();
-                    movies = theaterRepo.getTheaters().get(choice).getStringMovies();
+                    theaterRepo.getTheaters().get(position).moviesToString();
+                    stringMovies = theaterRepo.getTheaters().get(position).getStringMovies();
                     ArrayList<String> searched = new ArrayList<>();
                     Date after = null;
                     Date before = null;
@@ -114,8 +115,8 @@ public class MovieSearch extends AppCompatActivity{
                         e.printStackTrace();
                     }
 
-                    for (int i = 0; i < movies.size(); i++) {
-                        String movie = movies.get(i);
+                    for (int i = 0; i < stringMovies.size(); i++) {
+                        String movie = stringMovies.get(i);
                         String stringTime = movie.substring(movie.length() - 5);
                         try {
                             Date aika = formatter3.parse(stringTime);
@@ -156,8 +157,8 @@ public class MovieSearch extends AppCompatActivity{
                 System.out.println("Double press occurred!");
                 Toast.makeText(context, "Movie added as watched!",Toast.LENGTH_LONG).show();
                 fileWriter.applyContext(context);
-
-                fileWriter.addMovie(movies.get(position));
+                movies = theaterRepo.getTheaters().get(choice).getMovies();
+                fileWriter.addMovie(movies.get(position).getName(),movies.get(position).getRating(),movies.get(position).getDirector(),movies.get(position).getDttm());
             }
         });
 
@@ -267,12 +268,12 @@ public class MovieSearch extends AppCompatActivity{
             }
         } else if (textViewAfter.getText().toString().equals("") && textViewBefore.getText().toString().equals("")) {
             theaterRepo.getTheaters().get(choice).moviesToString();
-            movies = theaterRepo.getTheaters().get(choice).getStringMovies();
-            ArrayAdapter aa2 = new ArrayAdapter(context, android.R.layout.simple_list_item_1, movies);
+            stringMovies = theaterRepo.getTheaters().get(choice).getStringMovies();
+            ArrayAdapter aa2 = new ArrayAdapter(context, android.R.layout.simple_list_item_1, stringMovies);
             listView.setAdapter(aa2);
         } else {
             theaterRepo.getTheaters().get(choice).moviesToString();
-            movies = theaterRepo.getTheaters().get(choice).getStringMovies();
+            stringMovies = theaterRepo.getTheaters().get(choice).getStringMovies();
             ArrayList<String> searched = new ArrayList<>();
             Date after = null;
             Date before = null;
@@ -283,8 +284,8 @@ public class MovieSearch extends AppCompatActivity{
                 e.printStackTrace();
             }
 
-            for (int i = 0; i < movies.size(); i++) {
-                String movie = movies.get(i);
+            for (int i = 0; i < stringMovies.size(); i++) {
+                String movie = stringMovies.get(i);
                 String stringTime = movie.substring(movie.length() - 5);
                 System.out.println(stringTime);
                 try {
