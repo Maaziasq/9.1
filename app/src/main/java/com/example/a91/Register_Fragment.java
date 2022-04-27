@@ -84,7 +84,7 @@ public class Register_Fragment extends Fragment {
         return view;
     }
 
-//Checking password
+    //Checking password
     private boolean passwordCheck(String password) {
         boolean check = false;
         boolean length = false;

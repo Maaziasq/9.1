@@ -38,15 +38,14 @@
             android:id="@+id/editTextNimi"
             android:layout_width="230dp"
             android:layout_height="wrap_content"
-            android:hint="@string/search_hint"
-            android:elevation="3dp"
-            android:inputType="text"
             android:layout_centerHorizontal="true"
             android:layout_marginStart="80dp"
             android:layout_marginTop="30dp"
-            android:gravity="center"
             android:background="@drawable/search_background"
-            />
+            android:elevation="3dp"
+            android:gravity="center"
+            android:hint="@string/search_hint"
+            android:inputType="text" />
 
 
 

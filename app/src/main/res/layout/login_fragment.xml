@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/harkkatyotesti"
+    android:background="@drawable/taustakuva"
     android:padding="25dp">
 
     <LinearLayout
@@ -56,6 +56,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/action_log_in_short" />
+        <Button
+            android:id="@+id/authentication"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Authenticate with fingerprint" />
+
+
 
     </LinearLayout>
 
