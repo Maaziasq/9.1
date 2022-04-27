@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.Button;
 
 public class HomeActivity extends AppCompatActivity {
-    Button register, login;
+    Button register, login, reset;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +26,8 @@ public class HomeActivity extends AppCompatActivity {
                 } else if (view == findViewById(R.id.loginButton)){
                     fragment = new Login_Fragment();
                     System.out.println("Kirjautuminen");
+                } else if(view == findViewById(R.id.resetingBtn)){
+                    fragment = new passwordReset_Fragment();
                 }
                 FragmentManager manager = getSupportFragmentManager();
                 FragmentTransaction transaction = manager.beginTransaction();
@@ -38,5 +40,7 @@ public class HomeActivity extends AppCompatActivity {
         register.setOnClickListener(listener);
         login = findViewById(R.id.loginButton);
         login.setOnClickListener(listener);
+        reset = findViewById(R.id.resetingBtn);
+        reset.setOnClickListener(listener);
     }
 }
