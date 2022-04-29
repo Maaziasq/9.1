@@ -12,7 +12,6 @@
 
 
 
-
     <RelativeLayout
         android:id="@+id/framerLayout"
         android:layout_width="match_parent"

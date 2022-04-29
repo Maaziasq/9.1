@@ -45,7 +45,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
-public class MovieSearch extends AppCompatActivity implements CalendarAdapter.OnItemListener{
+public class MovieSearch extends AppCompatActivity{
 
     Context context = null;
     TheaterRepo theaterRepo = TheaterRepo.getInstance();
@@ -68,10 +68,6 @@ public class MovieSearch extends AppCompatActivity implements CalendarAdapter.On
     //variables for sidemenu
     private androidx.drawerlayout.widget.DrawerLayout drawerLayout;
 
-    //variables for calendar
-    private TextView monthYearText;
-    private RecyclerView calendarRecyclerView;
-    private LocalDate selectedDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +100,7 @@ public class MovieSearch extends AppCompatActivity implements CalendarAdapter.On
 
 
         // Fetching the correct movies based on theater choice
-        spinner.setSelection(0,false);
+        spinner.setSelection(0, false);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
@@ -118,10 +114,9 @@ public class MovieSearch extends AppCompatActivity implements CalendarAdapter.On
                 SimpleDateFormat formatter3 = new SimpleDateFormat("HH:mm");
 
                 if (textViewAfter.getText().toString().equals("") && textViewBefore.getText().toString().equals("")) {
-                    if(theaterRepo.getTheaters().get(position) != null){
+                    if (theaterRepo.getTheaters().get(position) != null) {
                         theaterRepo.getTheaters().get(position).moviesToString();
-                    }
-                    else{
+                    } else {
                         System.out.println("Movies list was empty");
                     }
                     stringMovies = theaterRepo.getTheaters().get(position).getStringMovies();
@@ -181,14 +176,12 @@ public class MovieSearch extends AppCompatActivity implements CalendarAdapter.On
 
             public void onItemDoubleClick(AdapterView<?> adapterView, View view, int position, long l) {
                 System.out.println("Double press occurred!");
-                Toast.makeText(context, "Movie added as watched!",Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Movie added as watched!", Toast.LENGTH_LONG).show();
                 fileWriter.applyContext(context);
                 movies = theaterRepo.getTheaters().get(choice).getMovies();
-                fileWriter.addMovie(movies.get(position).getName(),movies.get(position).getRating(),movies.get(position).getDirector(),movies.get(position).getDttm());
+                fileWriter.addMovie(movies.get(position).getName(), movies.get(position).getRating(), movies.get(position).getDirector(), movies.get(position).getDttm());
             }
         });
-
-
 
 
         //this part is for the navigation menu
@@ -219,110 +212,34 @@ public class MovieSearch extends AppCompatActivity implements CalendarAdapter.On
                 int id = item.getItemId();
 
                 //takes to SettingsActivity when Settings is pressed
-                if(id == R.id.nav_settings){
+                if (id == R.id.nav_settings) {
                     Intent intent = new Intent(MovieSearch.this, SettingsActivity.class);
                     startActivity(intent);
                 }
                 //takes to AccountActivity when My Account is pressed
-                else if(id == R.id.nav_account){
+                else if (id == R.id.nav_account) {
                     Intent intent = new Intent(MovieSearch.this, AccountActivity.class);
                     startActivity(intent);
                 }
+                //takes to CalendarActivity when Calendar is pressed
+                else if (id == R.id.nav_calendar) {
+                    Intent intent = new Intent(MovieSearch.this, CalendarActivity.class);
+                    startActivity(intent);
+                }
                 //logs out and takes to log in activity when Log Out is pressed
-                else if(id == R.id.nav_log){
+                else if (id == R.id.nav_log) {
                     Intent intent = new Intent(MovieSearch.this, HomeActivity.class);
                     startActivity(intent);
                     Toast.makeText(MovieSearch.this, "Logged out", Toast.LENGTH_LONG).show();
                     firebaseAuth.signOut();
-                }
-                else if(id == R.id.nav_history){
+                } else if (id == R.id.nav_history) {
                     Intent intent = new Intent(MovieSearch.this, HistoryActivity.class);
                     startActivity(intent);
                 }
                 return true;
             }
         });
-
-        //this part is for the calendar
-
-        initWidgets();
-        this.selectedDate = LocalDate.now();
-        setMonthView();
-
     }
-
-    private void initWidgets() {
-        calendarRecyclerView = findViewById(R.id.calendarRecyclerView);
-        monthYearText = findViewById(R.id.monthYearTV);
-    }
-
-    private void setMonthView()
-    {
-        System.out.println("tähän asti" + selectedDate.toString());
-        monthYearText.setText(monthYearFromDate(selectedDate));
-        ArrayList<String> daysInMonth = daysInMonthArray(selectedDate);
-
-        CalendarAdapter calendarAdapter = new CalendarAdapter(daysInMonth, this);
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 7);
-        calendarRecyclerView.setLayoutManager(layoutManager);
-        calendarRecyclerView.setAdapter(calendarAdapter);
-    }
-
-    private ArrayList<String> daysInMonthArray(LocalDate date)
-    {
-        ArrayList<String> daysInMonthArray = new ArrayList<>();
-        YearMonth yearMonth = YearMonth.from(date);
-
-        int daysInMonth = yearMonth.lengthOfMonth();
-
-        LocalDate firstOfMonth = selectedDate.withDayOfMonth(1);
-        int dayOfWeek = firstOfMonth.getDayOfWeek().getValue();
-
-        for(int i = 1; i <= 42; i++)
-        {
-            if(i <= dayOfWeek || i > daysInMonth + dayOfWeek)
-            {
-                daysInMonthArray.add("");
-            }
-            else
-            {
-                daysInMonthArray.add(String.valueOf(i - dayOfWeek));
-            }
-        }
-        return  daysInMonthArray;
-    }
-
-    private String monthYearFromDate(LocalDate date)
-    {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM yyyy");
-        System.out.println(date.toString());
-
-        return date.format(formatter);
-    }
-
-    public void previousMonthAction(View view)
-    {
-        selectedDate = selectedDate.minusMonths(1);
-        setMonthView();
-    }
-
-    public void nextMonthAction(View view)
-    {
-        selectedDate = selectedDate.plusMonths(1);
-        setMonthView();
-    }
-
-    @Override
-    public void onItemClick(int position, String dayText)
-    {
-        if(!dayText.equals(""))
-        {
-            String message = "Selected Date " + dayText + " " + monthYearFromDate(selectedDate);
-            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-        }
-    }
-
-    //calendar part ends here
 
     //makes hamburger icon open the sidemenu
     public void onClick(View v){
