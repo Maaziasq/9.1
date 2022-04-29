@@ -48,7 +48,6 @@
             android:inputType="text" />
 
 
-
         <com.example.a91.NDSpinner
             android:id="@+id/spinner"
             style="@style/Base.Widget.AppCompat.Spinner.Underlined"
