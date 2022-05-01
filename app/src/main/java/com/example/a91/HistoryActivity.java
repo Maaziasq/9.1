@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -49,10 +50,17 @@ public class HistoryActivity extends AppCompatActivity {
 
     }
 
+
+    //Read movie history from user's CSV to list view
     ArrayList<String> lista = new ArrayList<>();
     public void readToList(View v){
         try {
-           lista = fileWriter.readFile();
+            if(fileWriter.readFile() != null){
+                lista = fileWriter.readFile();
+            }
+           else{
+                Toast.makeText(context, "No movie history to show", Toast.LENGTH_LONG).show();
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
