@@ -6,20 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".CalendarActivity"
+    tools:context=".WeekViewActivity"
     android:paddingLeft="25dp"
     android:paddingRight="25dp">
-
-    <Button
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:text="Click here to see your weekly history"
-        android:background="@null"
-        android:textColor="@color/accentpurple"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:onClick="weeklyAction"
-        />
 
     <ImageButton
         android:id="@+id/backButton"
@@ -48,7 +37,7 @@
             android:background="@null"
             android:backgroundTint="@color/accentpurple"
             android:textStyle="bold"
-            android:onClick="previousMonthAction"
+            android:onClick="previousWeekAction"
             android:textSize="10dp"/>
 
 
@@ -68,7 +57,7 @@
             android:src="@drawable/ic_baseline_arrow_right_24"
             android:background="@null"
             android:textStyle="bold"
-            android:onClick="nextMonthAction"
+            android:onClick="nextWeekAction"
             android:textSize="10dp"/>
 
     </LinearLayout>
@@ -148,6 +137,23 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/calendarRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New event"
+        android:background="@null"
+        android:textStyle="bold"
+        android:onClick="newEventAction"
+        android:layout_gravity="center"
+        android:textSize="10dp"/>
+
+    <ListView
+        android:id="@+id/eventListView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"/>
 
 </LinearLayout>
