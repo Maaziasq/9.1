@@ -9,19 +9,25 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.protobuf.StringValue;
 
 public class AccountActivity extends AppCompatActivity {
 
@@ -32,6 +38,7 @@ public class AccountActivity extends AppCompatActivity {
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     PersonalInfo pI;
+    TextView textView;
 
 
     @Override
@@ -39,6 +46,8 @@ public class AccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
         username = findViewById(R.id.insertname);
+        textView = findViewById(R.id.navheader);
+
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
@@ -55,6 +64,7 @@ public class AccountActivity extends AppCompatActivity {
                 }
                 else{
                     addDataToFirebase(name);
+                    addTextToNavHeader();
                 }
             }
         });
@@ -88,19 +98,40 @@ public class AccountActivity extends AppCompatActivity {
         });*/
 
     }
+    // Adding data to firebase realtime database
     private void addDataToFirebase(String username){
         pI.setUsername(username);
+
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 databaseReference.child(firebaseAuth.getInstance().getCurrentUser().getUid()).setValue(pI);
-                Toast.makeText(AccountActivity.this,"Added!", Toast.LENGTH_LONG).show();
+                Toast.makeText(AccountActivity.this,"Added "+username+"!", Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(AccountActivity.this, "Adding failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    //Change username to navigation header
+    private void addTextToNavHeader(){
+
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference textRef = rootRef.child(firebaseAuth.getInstance().getCurrentUser().getUid()).child("username");
+        textRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DataSnapshot snapshot = task.getResult();
+                    String text = snapshot.getValue(String.class);
+                    System.out.println(text);
+                    textView.setText(text);
+                } else {
+                    Log.d("TAG", task.getException().getMessage());
+                }
             }
         });
     }
