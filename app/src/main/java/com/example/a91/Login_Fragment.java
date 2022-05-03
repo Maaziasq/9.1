@@ -71,6 +71,7 @@ public class Login_Fragment extends Fragment {
                 break;
         }*/
 
+        // Handling different results of biometric authentication
         executor = ContextCompat.getMainExecutor(getActivity());
         biometricPrompt = new BiometricPrompt(getActivity(), executor, new BiometricPrompt.AuthenticationCallback(){
             @Override
@@ -94,6 +95,7 @@ public class Login_Fragment extends Fragment {
                 Toast.makeText(getActivity(), "Authentication failed.", Toast.LENGTH_LONG).show();
             }
         });
+        //Set prompt infos to biometric authentication
         promptInfo = new BiometricPrompt.PromptInfo.Builder()
                 .setTitle("Biometric authentication")
                 .setSubtitle("Login using your fingerprint")
