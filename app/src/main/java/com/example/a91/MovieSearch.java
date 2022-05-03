@@ -34,9 +34,11 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.io.FileNotFoundException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Clock;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.time.LocalDate;
@@ -45,7 +47,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
-public class MovieSearch extends AppCompatActivity{
+public class MovieSearch extends AppCompatActivity {
 
     Context context = null;
     TheaterRepo theaterRepo = TheaterRepo.getInstance();
@@ -64,6 +66,9 @@ public class MovieSearch extends AppCompatActivity{
     FileWriter fileWriter = FileWriter.getInstance();
     ImageButton searchbutton;
     ImageButton menubutton;
+    private LocalTime time;
+
+
 
     //variables for sidemenu
     private androidx.drawerlayout.widget.DrawerLayout drawerLayout;
@@ -86,6 +91,9 @@ public class MovieSearch extends AppCompatActivity{
         searchbutton = findViewById(R.id.button);
         stringTheaters = theaterRepo.getStringTheaters();
         firebaseAuth = FirebaseAuth.getInstance();
+        time = LocalTime.now();
+        fileWriter.applyContext(context);
+
 
         //Reading all theaters from the Finnkino XML
         theaterRepo.readTheaters();
@@ -180,6 +188,34 @@ public class MovieSearch extends AppCompatActivity{
                 fileWriter.applyContext(context);
                 movies = theaterRepo.getTheaters().get(choice).getMovies();
                 fileWriter.addMovie(movies.get(position).getName(), movies.get(position).getRating(), movies.get(position).getDirector(), movies.get(position).getDttm());
+
+                //this is for adding data to as calendar events
+                ArrayList<String> allMovies = new ArrayList<>();
+
+                try {
+                    allMovies = fileWriter.readFile();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+                for (int i = 0; i < allMovies.size(); i++) {
+                    String movie = allMovies.get(i);
+
+                    String moviesplit[] = movie.split(";"); //this is one movie splitted
+                    String movieName = moviesplit[0];
+                    System.out.println(movieName);
+                    LocalDate movieDate = LocalDate.parse(moviesplit[3].substring(0, 10));
+                    System.out.println(movieDate);
+                    System.out.println(CalendarUtils.selectedDate);
+                    LocalTime movieTime = LocalTime.parse(moviesplit[3].substring(11, 16));
+                    System.out.println(movieTime);
+
+
+                    Event newEvent = new Event(movieName, movieDate, movieTime); //here put data parsed from csv
+                    Event.eventsList.add(newEvent);
+
+                }
+
             }
         });
 

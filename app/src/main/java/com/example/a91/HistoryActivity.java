@@ -51,7 +51,7 @@ public class HistoryActivity extends AppCompatActivity {
     }
 
 
-    //Read movie history from user's CSV to list view
+    //Read movie history from user's CSV to list view //TODO this functionality should be added to add events to calendar
     ArrayList<String> lista = new ArrayList<>();
     public void readToList(View v){
         try {

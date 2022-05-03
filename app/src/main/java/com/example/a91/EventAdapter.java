@@ -14,6 +14,8 @@ import androidx.annotation.RequiresApi;
 
 import java.util.List;
 
+//event feature for the visua calendar inspired by: https://github.com/codeWithCal/CalendarTutorialAndroidStudio
+
 public class EventAdapter extends ArrayAdapter<Event>
 {
     public EventAdapter(@NonNull Context context, List<Event> events){
