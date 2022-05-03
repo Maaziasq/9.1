@@ -18,6 +18,9 @@ import com.google.firebase.database.collection.LLRBNode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+//source for the visual calendar: https://github.com/codeWithCal/CalendarTutorialAndroidStudio
+
+
 class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder>
 {
     private final ArrayList<LocalDate> days;
@@ -67,4 +70,5 @@ class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder>
     {
         void onItemClick(int position, LocalDate date);
     }
+
 }

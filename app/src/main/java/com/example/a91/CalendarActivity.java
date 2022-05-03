@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,7 +17,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.FileNotFoundException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -27,6 +30,8 @@ public class CalendarActivity extends AppCompatActivity implements CalendarAdapt
 {
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;
+
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -94,6 +99,7 @@ public class CalendarActivity extends AppCompatActivity implements CalendarAdapt
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void weeklyAction(View view) {
         startActivity(new Intent(CalendarActivity.this, WeekViewActivity.class));
     }

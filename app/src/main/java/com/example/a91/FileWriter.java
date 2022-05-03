@@ -40,10 +40,10 @@ public class FileWriter {
         try {
             String fname = "Movie history of " + Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail() + ".csv";
             OutputStreamWriter ows = new OutputStreamWriter(context.openFileOutput(fname, Context.MODE_APPEND));
-            String uHeader = "Data of: " + FirebaseAuth.getInstance().getCurrentUser().getEmail() + "\n";
-            String dHeader = "Name;Rating;Director;Dttm\n";
-            ows.write(uHeader);
-            ows.write(dHeader);
+            //String uHeader = "Data of: " + FirebaseAuth.getInstance().getCurrentUser().getEmail() + "\n";
+            //String dHeader = "Name;Rating;Director;Dttm\n";
+            //ows.write(uHeader);
+            //ows.write(dHeader);
             ows.close();
             System.out.println("Uusi tiedosto luotiin");
 
@@ -67,7 +67,6 @@ public class FileWriter {
             e.printStackTrace();
         }
     }
-
 
     public void addMovie(String name, String rating, String director, String dttm) {
         String fname = "Movie history of " + Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail() + ".csv";

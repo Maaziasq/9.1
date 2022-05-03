@@ -80,23 +80,6 @@ public class AccountActivity extends AppCompatActivity {
             }
         });
 
-
-       /* setcalendar = findViewById(R.id.datebutton);
-        setcalendartext =findViewById(R.id.setdatetext);
-
-        setcalendar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(setcalendartext.getText().isEmpty()){        //TÄÄ ON KESKEN NO PANIC
-
-                    Intent intent = new Intent(Intent.ACTION_INSERT);
-                    intent.setData(CalendarContract.CONTENT_URI);
-                    intent.putExtra(CalendarContract.Events.TITLE)
-                }
-
-            }
-        });*/
-
     }
     // Adding data to firebase realtime database
     private void addDataToFirebase(String username){

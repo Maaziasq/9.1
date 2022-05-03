@@ -14,9 +14,6 @@
         android:theme="@style/Theme.91"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".EventEditActivity"
-            android:exported="false" />
-        <activity
             android:name=".WeekViewActivity"
             android:exported="false" />
         <activity
