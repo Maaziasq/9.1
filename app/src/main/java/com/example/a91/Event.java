@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
+//event feature for the visua calendar inspired by: https://github.com/codeWithCal/CalendarTutorialAndroidStudio
+
 public class Event {
 
     public static ArrayList<Event> eventsList = new ArrayList<>();

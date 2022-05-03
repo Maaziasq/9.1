@@ -9,6 +9,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+//source for the visual calendar: https://github.com/codeWithCal/CalendarTutorialAndroidStudio
+
+
 public class CalendarViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
 {
     private final ArrayList<LocalDate> days;
