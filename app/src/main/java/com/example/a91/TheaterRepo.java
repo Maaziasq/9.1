@@ -1,5 +1,9 @@
 package com.example.a91;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,6 +20,13 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.LinkedBlockingQueue;
+
+
 import java.util.Collections;
 
 public class TheaterRepo {
@@ -24,15 +35,15 @@ public class TheaterRepo {
     private ArrayList<String> stringTheaters;
 
     //singleton
-    private static TheaterRepo repo = new TheaterRepo();
+    private static final TheaterRepo repo = new TheaterRepo();
 
     int searchCounter = 0;
 
-    private TheaterRepo(){
-        theaters = new ArrayList<Theater>();
+    private TheaterRepo() {
+        theaters = new ArrayList<>();
     }
 
-    public static TheaterRepo getInstance(){
+    public static TheaterRepo getInstance() {
         return repo;
     }
 
@@ -40,13 +51,9 @@ public class TheaterRepo {
         return theaters;
     }
 
-    public void setTheaters(ArrayList<Theater> theaters) {
-        this.theaters = theaters;
-    }
-
-    public void teatteritToString(){
+    public void teatteritToString() {
         stringTheaters = new ArrayList<>();
-        for (Theater t : theaters){
+        for (Theater t : theaters) {
             stringTheaters.add(t.getLocation());
         }
     }
@@ -67,22 +74,18 @@ public class TheaterRepo {
 
             NodeList nList = doc.getDocumentElement().getElementsByTagName("TheatreArea");
 
-            for (int i = 0; i< nList.getLength(); i++){
+            for (int i = 0; i < nList.getLength(); i++) {
                 Node node = nList.item(i);
 
 
-                if(node.getNodeType() == Node.ELEMENT_NODE){
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
                     Element element = (Element) node;
-                    theaters.add(new Theater(element.getElementsByTagName("ID").item(0).getTextContent(),element.getElementsByTagName("Name").item(0).getTextContent()));
+                    theaters.add(new Theater(element.getElementsByTagName("ID").item(0).getTextContent(), element.getElementsByTagName("Name").item(0).getTextContent()));
                 }
 
             }
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (ParserConfigurationException e) {
+        } catch (IOException | SAXException | ParserConfigurationException e) {
             e.printStackTrace();
         } finally {
             System.out.println("###########THEATERS DONE###########");
@@ -90,11 +93,14 @@ public class TheaterRepo {
     }
 
     //Reads movies from selected theater from Finnkino XML and OMDB
+    //OMDB Searches performed asynchronously
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void readMovies(String date, int choice) {
         try {
+            searchCounter = 0;
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             String id = theaters.get(choice).getId();
-            String urlString = "https://www.finnkino.fi/xml/Schedule/?area="+id+"&dt="+date;
+            String urlString = "https://www.finnkino.fi/xml/Schedule/?area=" + id + "&dt=" + date;
             Document doc = builder.parse(urlString);
             doc.getDocumentElement().normalize();
 
@@ -103,45 +109,41 @@ public class TheaterRepo {
 
 
             OMDBClient omdb = new OMDBClient();
+            ExecutorService executor = Executors.newFixedThreadPool(nList.getLength());
+            LinkedBlockingQueue queue = new LinkedBlockingQueue();
 
-            for (int i = 0; i< nList.getLength(); i++){
+
+            for (int i = 0; i < nList.getLength(); i++) {
                 Node node = nList.item(i);
 
-                if(node.getNodeType() == Node.ELEMENT_NODE){
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
                     Element element = (Element) node;
 
-                    String aika = element.getElementsByTagName("dttmShowStart").item(0).getTextContent();
-                    String saika = aika.substring(11,16);
+                    String time = element.getElementsByTagName("dttmShowStart").item(0).getTextContent();
+                    String stime = time.substring(11, 16);
                     //String pubYear = element.getElementsByTagName("PubDate").item(0).getTextContent().substring(0,4);
                     String title = element.getElementsByTagName("Title").item(0).getTextContent();
                     String originalTitle = element.getElementsByTagName("OriginalTitle").item(0).getTextContent();
 
 
-                    String omdbJson = omdb.searchMovieByTitle(originalTitle,"d70c841d");
+                    //OMDB Searches performed asynchronously
+                    queue.add(omdb.getMovieURL(originalTitle, "d70c841d"));
+                    Future<String> future = executor.submit(new HTTPworker(queue));
+                    String omdbJson = future.get();
+
                     JSONObject omdbSearch = new JSONObject(omdbJson);
-                    System.out.println(omdbSearch);
+                    //System.out.println(omdbSearch);
                     searchCounter++;
                     String response = omdbSearch.getString("Response");
-                    if(response.equals("True")){
+                    if (response.equals("True")) {
 
-                        JSONArray search = omdbSearch.getJSONArray("Search");
-                        //int n = search.length();
-                        //for (int x = 0; i<n ; i++)
-                        {
-                            JSONObject movie = search.getJSONObject(0);
-                            String imdbID = movie.getString("imdbID");
+                        String rating = omdbSearch.getString("imdbRating");
+                        String director = omdbSearch.getString("Director");
+                        movies.add(new Movie(title, stime, rating, director, time));
 
-                            String omdbJsonID = omdb.searchMovieById(imdbID, "d70c841d");
-                            JSONObject omdbIdSearch = new JSONObject(omdbJsonID);
-                            searchCounter++;
 
-                            String rating = omdbIdSearch.getString("imdbRating");
-                            String director = omdbIdSearch.getString("Director");
-                            movies.add(new Movie(title, saika, rating, director, aika));
-                    }
-
-                    }else{
-                        movies.add(new Movie(title,saika, "N/A","N/A",aika));
+                    } else {
+                        movies.add(new Movie(title, stime, "N/A", "N/A", time));
                     }
 
                 }
@@ -149,33 +151,31 @@ public class TheaterRepo {
 
             theaters.get(choice).setMovies(movies);
 
-        } catch (IOException e) {
+        } catch (IOException | SAXException | ParserConfigurationException | JSONException e) {
             e.printStackTrace();
-        } catch (SAXException e) {
+        } catch (ExecutionException e) {
             e.printStackTrace();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
+        } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
-            System.out.println("Searches performed: "+searchCounter);
+            System.out.println("Searches performed: " + searchCounter);
             System.out.println("###########MOVIES DONE###########");
         }
     }
 
     //Reads movies from all theaters
     public ArrayList<String> readAll(String nimi) {
-        ArrayList<String> all= new ArrayList<>();
-        all.add(0,nimi);
+        ArrayList<String> all = new ArrayList<>();
+        all.add(0, nimi);
         try {
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            ArrayList<Integer> areas = new ArrayList<Integer>();
-            Collections.addAll(areas,1014 ,1015 ,1016, 1017, 1041, 1018, 1019, 1021, 1022);
+            ArrayList<Integer> areas = new ArrayList<>();
+            Collections.addAll(areas, 1014, 1015, 1016, 1017, 1041, 1018, 1019, 1021, 1022);
 
-            for(int i = 0; i<areas.size();i++){
+            for (int i = 0; i < areas.size(); i++) {
 
 
-                String urlString = "https://www.finnkino.fi/xml/Schedule/?Area="+areas.get(i).toString();
+                String urlString = "https://www.finnkino.fi/xml/Schedule/?Area=" + areas.get(i).toString();
                 Document doc = builder.parse(urlString);
                 doc.getDocumentElement().normalize();
                 //System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
@@ -183,19 +183,18 @@ public class TheaterRepo {
                 NodeList nList = doc.getDocumentElement().getElementsByTagName("Show");
 
 
-
-                for (int j = 0; j< nList.getLength(); j++){
+                for (int j = 0; j < nList.getLength(); j++) {
                     Node node = nList.item(j);
                     //System.out.println("Elements in this: "+node.getNodeName());
 
-                    if(node.getNodeType() == Node.ELEMENT_NODE){
+                    if (node.getNodeType() == Node.ELEMENT_NODE) {
                         Element element = (Element) node;
 
                         String time = element.getElementsByTagName("dttmShowStart").item(0).getTextContent();
-                        String stringTime = time.substring(11,16);
+                        String stringTime = time.substring(11, 16);
                         String title = element.getElementsByTagName("Title").item(0).getTextContent();
                         String location = element.getElementsByTagName("Theatre").item(0).getTextContent();
-                        if (title.equals(nimi)){
+                        if (title.equals(nimi)) {
                             all.add(location + " " + stringTime);
                         }
 
@@ -205,11 +204,7 @@ public class TheaterRepo {
 
             }
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (ParserConfigurationException e) {
+        } catch (IOException | SAXException | ParserConfigurationException e) {
             e.printStackTrace();
         } finally {
             System.out.println("###########MOVIES DONE###########");

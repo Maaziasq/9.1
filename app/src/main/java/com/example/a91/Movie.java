@@ -19,16 +19,8 @@ public class Movie {
         return time;
     }
 
-    public void setTime(String time) {
-        this.time = time;
-    }
-
     public String getRating() {
         return rating;
-    }
-
-    public void setRating(String rating) {
-        this.rating = rating;
     }
 
     public Movie(String name, String time, String rating, String director, String dttm) {
@@ -54,7 +46,6 @@ public class Movie {
     public Movie(String name, String time) {
         this.name = name;
         this.time = time;
-        this.rating = rating;
     }
 
     public String getDirector() {

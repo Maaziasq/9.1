@@ -12,7 +12,6 @@
 
 
 
-
     <RelativeLayout
         android:id="@+id/framerLayout"
         android:layout_width="match_parent"
@@ -46,7 +45,6 @@
             android:gravity="center"
             android:hint="@string/search_hint"
             android:inputType="text" />
-
 
 
         <com.example.a91.NDSpinner
@@ -125,7 +123,6 @@
             android:layout_toEndOf="@+id/editTextNimi"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:onClick="searchByName"
-
             android:src="@drawable/ic_baseline_search_24" />
 
 

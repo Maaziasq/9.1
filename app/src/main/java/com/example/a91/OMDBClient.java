@@ -1,8 +1,12 @@
 package com.example.a91;
 
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
+
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,19 +14,21 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
 
 //https://www.youtube.com/watch?v=OWID-D5W9cU used as source and applied
+//This is partly deprecated now that we implemented async HTTP requests through HTTPworker and Callabe/Future
+//But the URL builder is still used
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class OMDBClient {
 
-    public static final String SEARCH_URL = "https://www.omdbapi.com/?s=TITLE&apikey=APIKEY";
+    public static final String SEARCH_URL = "https://www.omdbapi.com/?t=TITLE&apikey=APIKEY";
     public static final String SEARCH_URL_ID = "https://www.omdbapi.com/?i=ID&apikey=APIKEY";
 
-    public static String sendGetRequest(String requestURL) throws JSONException {
+    public static String sendGetRequest(String requestURL) {
         StringBuffer response = new StringBuffer();
 
         try {
@@ -43,13 +49,12 @@ public class OMDBClient {
             buffer.close();
             connection.disconnect();
 
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
         return response.toString();
     }
+
 
     public String searchMovieByTitle(String title, String key) throws JSONException {
         try{
@@ -61,6 +66,18 @@ public class OMDBClient {
                 .replaceAll("TITLE",title)
                 .replaceAll("APIKEY",key);
         return sendGetRequest(requestUrl);
+    }
+
+    public String getMovieURL(String title, String key) throws JSONException {
+        try{
+            title = URLEncoder.encode(title,"UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        String requestUrl = SEARCH_URL
+                .replaceAll("TITLE",title)
+                .replaceAll("APIKEY",key);
+        return requestUrl;
     }
 
     public String searchMovieById(String id, String key) throws JSONException {

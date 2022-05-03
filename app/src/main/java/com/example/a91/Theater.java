@@ -3,7 +3,7 @@ package com.example.a91;
 import java.util.ArrayList;
 
 public class Theater {
-    private String location;
+    private final String location;
     private String id;
     private ArrayList<Movie> movies;
     private ArrayList<String> stringMovies;
@@ -12,12 +12,11 @@ public class Theater {
         return movies;
     }
 
-    public ArrayList<String> moviesToString(){
+    public void moviesToString(){
         stringMovies = new ArrayList<>();
         for (Movie m : movies){
             stringMovies.add(m.getName()+"\nStart time: "+m.getTime()+"\nIMDB rating: "+m.getRating());
         }
-        return stringMovies;
     }
 
     public ArrayList<String> getStringMovies() {
@@ -32,9 +31,6 @@ public class Theater {
         return location;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
-    }
 
     public String getId() {
         return id;

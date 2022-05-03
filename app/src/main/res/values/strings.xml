@@ -33,4 +33,7 @@
     <string name="showlocation">Enable location</string>
     <string name="give_email">Give your email</string>
     <string name="give_name">Give your name</string>
+    <string name="back">back</string>
+    <string name="forward">forward</string>
+    <string name="feb_2021">Feb 2021</string>
 </resources>

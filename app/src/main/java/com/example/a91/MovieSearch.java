@@ -5,17 +5,20 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.provider.CalendarContract;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -24,6 +27,8 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -31,8 +36,13 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Clock;
 import java.util.ArrayList;
 import java.util.Date;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class MovieSearch extends AppCompatActivity{
@@ -57,6 +67,7 @@ public class MovieSearch extends AppCompatActivity{
 
     //variables for sidemenu
     private androidx.drawerlayout.widget.DrawerLayout drawerLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,16 +100,25 @@ public class MovieSearch extends AppCompatActivity{
 
 
         // Fetching the correct movies based on theater choice
-        spinner.setSelection(0,false);
+        spinner.setSelection(0, false);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 choice = position;
+                /*String date = textViewDate.getText().toString();
+                if(date.equals("")){
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+                    date = formatter.format(new Date());
+                }*/
                 theaterRepo.readMovies(textViewDate.getText().toString(), position);
                 SimpleDateFormat formatter3 = new SimpleDateFormat("HH:mm");
 
                 if (textViewAfter.getText().toString().equals("") && textViewBefore.getText().toString().equals("")) {
-                    theaterRepo.getTheaters().get(position).moviesToString();
+                    if (theaterRepo.getTheaters().get(position) != null) {
+                        theaterRepo.getTheaters().get(position).moviesToString();
+                    } else {
+                        System.out.println("Movies list was empty");
+                    }
                     stringMovies = theaterRepo.getTheaters().get(position).getStringMovies();
                     ArrayAdapter aa2 = new ArrayAdapter(context, android.R.layout.simple_list_item_1, stringMovies);
                     listView.setAdapter(aa2);
@@ -120,6 +140,7 @@ public class MovieSearch extends AppCompatActivity{
                         String stringTime = movie.substring(movie.length() - 5);
                         try {
                             Date aika = formatter3.parse(stringTime);
+                            assert aika != null;
                             if (aika.after(after) && aika.before(before)) {
                                 searched.add(movie);
                             }
@@ -155,14 +176,12 @@ public class MovieSearch extends AppCompatActivity{
 
             public void onItemDoubleClick(AdapterView<?> adapterView, View view, int position, long l) {
                 System.out.println("Double press occurred!");
-                Toast.makeText(context, "Movie added as watched!",Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Movie added as watched!", Toast.LENGTH_LONG).show();
                 fileWriter.applyContext(context);
                 movies = theaterRepo.getTheaters().get(choice).getMovies();
-                fileWriter.addMovie(movies.get(position).getName(),movies.get(position).getRating(),movies.get(position).getDirector(),movies.get(position).getDttm());
+                fileWriter.addMovie(movies.get(position).getName(), movies.get(position).getRating(), movies.get(position).getDirector(), movies.get(position).getDttm());
             }
         });
-
-
 
 
         //this part is for the navigation menu
@@ -175,7 +194,7 @@ public class MovieSearch extends AppCompatActivity{
 
 
         NavigationView navigationView = findViewById(R.id.navigationView);
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        drawerLayout = findViewById(R.id.drawerLayout);
 
         navigationView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -193,32 +212,36 @@ public class MovieSearch extends AppCompatActivity{
                 int id = item.getItemId();
 
                 //takes to SettingsActivity when Settings is pressed
-                if(id == R.id.nav_settings){
+                if (id == R.id.nav_settings) {
                     Intent intent = new Intent(MovieSearch.this, SettingsActivity.class);
                     startActivity(intent);
                 }
                 //takes to AccountActivity when My Account is pressed
-                else if(id == R.id.nav_account){
+                else if (id == R.id.nav_account) {
                     Intent intent = new Intent(MovieSearch.this, AccountActivity.class);
                     startActivity(intent);
                 }
+                //takes to CalendarActivity when Calendar is pressed
+                else if (id == R.id.nav_calendar) {
+                    Intent intent = new Intent(MovieSearch.this, CalendarActivity.class);
+                    startActivity(intent);
+                }
                 //logs out and takes to log in activity when Log Out is pressed
-                else if(id == R.id.nav_log){
+                else if (id == R.id.nav_log) {
                     Intent intent = new Intent(MovieSearch.this, HomeActivity.class);
                     startActivity(intent);
                     Toast.makeText(MovieSearch.this, "Logged out", Toast.LENGTH_LONG).show();
                     firebaseAuth.signOut();
-                }
-                else if(id == R.id.nav_history){
+                } else if (id == R.id.nav_history) {
                     Intent intent = new Intent(MovieSearch.this, HistoryActivity.class);
                     startActivity(intent);
                 }
                 return true;
             }
         });
-
     }
 
+    //makes hamburger icon open the sidemenu
     public void onClick(View v){
         drawerLayout.openDrawer(Gravity.LEFT);
     }
@@ -232,7 +255,7 @@ public class MovieSearch extends AppCompatActivity{
         String nimi = textVewNimi.getText().toString();
 
 
-        if (nimi != "") {
+        if (!nimi.equals("")) {
             ArrayList<String> kaikki = theaterRepo.readAll(nimi);
 
             if (textViewAfter.getText().toString().equals("") && textViewBefore.getText().toString().equals("")) {
@@ -290,6 +313,7 @@ public class MovieSearch extends AppCompatActivity{
                 System.out.println(stringTime);
                 try {
                     Date aika = formatter3.parse(stringTime);
+                    assert aika != null;
                     if (aika.after(after) && aika.before(before)) {
                         searched.add(movie);
                     }
@@ -306,5 +330,7 @@ public class MovieSearch extends AppCompatActivity{
 
 
     }
+
+
 
 }
