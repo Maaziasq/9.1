@@ -5,46 +5,34 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.provider.CalendarContract;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
-
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.firebase.auth.FirebaseAuth;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.FileNotFoundException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Clock;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
-import java.time.LocalDate;
-import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class MovieSearch extends AppCompatActivity {
@@ -66,7 +54,7 @@ public class MovieSearch extends AppCompatActivity {
     FileWriter fileWriter = FileWriter.getInstance();
     ImageButton searchbutton;
     ImageButton menubutton;
-    private LocalTime time;
+    TextView textView;
 
 
 
@@ -91,8 +79,9 @@ public class MovieSearch extends AppCompatActivity {
         searchbutton = findViewById(R.id.button);
         stringTheaters = theaterRepo.getStringTheaters();
         firebaseAuth = FirebaseAuth.getInstance();
-        time = LocalTime.now();
+        LocalTime time = LocalTime.now();
         fileWriter.applyContext(context);
+        textView = findViewById(R.id.navheader);
 
 
         //Reading all theaters from the Finnkino XML
@@ -134,29 +123,30 @@ public class MovieSearch extends AppCompatActivity {
                     theaterRepo.getTheaters().get(position).moviesToString();
                     stringMovies = theaterRepo.getTheaters().get(position).getStringMovies();
                     ArrayList<String> searched = new ArrayList<>();
-                    Date after = null;
-                    Date before = null;
+                    Date after;
+                    Date before;
                     try {
                         after = formatter3.parse(textViewAfter.getText().toString());
                         before = formatter3.parse(textViewBefore.getText().toString());
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
+
 
                     for (int i = 0; i < stringMovies.size(); i++) {
                         String movie = stringMovies.get(i);
                         String stringTime = movie.substring(movie.length() - 5);
-                        try {
-                            Date aika = formatter3.parse(stringTime);
-                            assert aika != null;
-                            if (aika.after(after) && aika.before(before)) {
-                                searched.add(movie);
-                            }
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
+                        System.out.println("####### movie: " + movie);
+                        System.out.println("####### substring: " + stringTime);
 
+                        Date aika = formatter3.parse(stringTime);
+                        assert aika != null;
+                        if (aika.after(after) && aika.before(before)) {
+                            searched.add(movie);
+                        }
                     }
+
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
                     ArrayAdapter aa3 = new ArrayAdapter(context, android.R.layout.simple_list_item_1, searched);
                     listView.setAdapter(aa3);
                 }
@@ -275,6 +265,7 @@ public class MovieSearch extends AppCompatActivity {
                 return true;
             }
         });
+
     }
 
     //makes hamburger icon open the sidemenu
@@ -361,9 +352,6 @@ public class MovieSearch extends AppCompatActivity {
             ArrayAdapter aa3 = new ArrayAdapter(context, android.R.layout.simple_list_item_1, searched);
             listView.setAdapter(aa3);
         }
-
-
-
 
     }
 

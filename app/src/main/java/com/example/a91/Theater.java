@@ -15,7 +15,7 @@ public class Theater {
     public void moviesToString(){
         stringMovies = new ArrayList<>();
         for (Movie m : movies){
-            stringMovies.add(m.getName()+"\nStart time: "+m.getTime()+"\nIMDB rating: "+m.getRating());
+            stringMovies.add(m.getName()+"\nIMDB rating: "+m.getRating()+"\nStart time: "+m.getTime());
         }
     }
 

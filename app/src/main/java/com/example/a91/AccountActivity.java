@@ -1,46 +1,39 @@
 package com.example.a91;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.CalendarContract;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
-import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.navigation.NavigationView;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.protobuf.StringValue;
+
+import java.util.Objects;
 
 public class AccountActivity extends AppCompatActivity {
 
-    EditText setcalendartext, username;
-    CalendarView calendarView;
-    Button setcalendar, saveBtn;
-    FirebaseAuth firebaseAuth;
+    EditText username;
+    Button saveBtn;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     PersonalInfo pI;
     TextView textView;
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,29 +48,21 @@ public class AccountActivity extends AppCompatActivity {
         pI = new PersonalInfo();
         saveBtn = findViewById(R.id.saveData);
 
-        saveBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String name = username.getText().toString();
-                if (TextUtils.isEmpty(name)){
-                    Toast.makeText(AccountActivity.this, "Please add username", Toast.LENGTH_LONG).show();
-                }
-                else{
-                    addDataToFirebase(name);
-                    addTextToNavHeader();
-                }
+        saveBtn.setOnClickListener(view -> {
+            String name = username.getText().toString();
+            if (TextUtils.isEmpty(name)){
+                Toast.makeText(AccountActivity.this, "Please add username", Toast.LENGTH_LONG).show();
+            }
+            else{
+                addDataToFirebase(name);
             }
         });
 
         //image button that takes the user back to MainActivity
-        ImageButton backbutton = (ImageButton) findViewById(R.id.backButton);
-        backbutton.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(AccountActivity.this, MovieSearch.class);
-                startActivity(intent);
-            }
+        ImageButton backbutton = findViewById(R.id.backButton);
+        backbutton.setOnClickListener(view -> {
+            Intent intent = new Intent(AccountActivity.this, MovieSearch.class);
+            startActivity(intent);
         });
 
     }
@@ -89,7 +74,7 @@ public class AccountActivity extends AppCompatActivity {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                databaseReference.child(firebaseAuth.getInstance().getCurrentUser().getUid()).setValue(pI);
+                databaseReference.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).setValue(pI);
                 Toast.makeText(AccountActivity.this,"Added "+username+"!", Toast.LENGTH_LONG).show();
             }
 
@@ -99,23 +84,5 @@ public class AccountActivity extends AppCompatActivity {
             }
         });
     }
-    //Change username to navigation header
-    private void addTextToNavHeader(){
 
-        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference textRef = rootRef.child(firebaseAuth.getInstance().getCurrentUser().getUid()).child("username");
-        textRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DataSnapshot snapshot = task.getResult();
-                    String text = snapshot.getValue(String.class);
-                    System.out.println(text);
-                    textView.setText(text);
-                } else {
-                    Log.d("TAG", task.getException().getMessage());
-                }
-            }
-        });
-    }
 }
